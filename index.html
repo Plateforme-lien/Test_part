@@ -199,6 +199,21 @@
     .features{grid-template-columns:1fr;}
     .stats-grid{grid-template-columns:1fr;}
   }
+  .welcome-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  background: linear-gradient(135deg, #0ea5a4 0%, #0d8887 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcome-text {
+  color: #6b7280; /* gris doux */
+  text-align: justify;
+  font-size: 15px;
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -221,8 +236,8 @@
     </div>
     
     <div class="card"> 
-      <h2 style="margin:0 0 24px;font-size:22px;font-weight:700"; linear-gradient(135deg, #0ea5a4 0%, #0d8887 100%);>Bienvenue sur la plateforme de recherche</h2>
-      <p>Cette plateforme a pour vocation de faciliter la mise en contact avec des professionnels libéraux spécialisés dans l'accompagnement des personnes autistes (TSA).</p>
+      <h2 class="welcome-title">Bienvenue sur la plateforme de recherche</h2>
+      <p class="welcome-text">Cette plateforme a pour vocation de faciliter la mise en contact avec des professionnels libéraux spécialisés dans l'accompagnement des personnes autistes (TSA).</p>
     </div>
 
     <div class="card">
