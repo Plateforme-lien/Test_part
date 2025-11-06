@@ -11,6 +11,7 @@
     --primary:#0ea5a4;
     --primary-dark:#0d8887;
     --muted:#6b7280;
+    --section-bg:#f9fafb;
   }
 
   body{
@@ -30,6 +31,33 @@
     margin-bottom:24px;
   }
 
+  .nav-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:32px;
+    padding-bottom:16px;
+    border-bottom:2px solid #e6eef6;
+  }
+  .nav-header h1{
+    margin:0;
+    font-size:22px;
+    color:#0f1724;
+  }
+  .nav-links{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:color 0.2s;
+  }
+  .nav-links a:hover{color:var(--primary);}
+
   h2{
     color:#0f1724;
     font-size:24px;
@@ -37,14 +65,51 @@
     font-weight:700;
   }
 
-  p,ul,li{color:#333;line-height:1.7;margin-bottom:16px;}
+  h3{
+    color:var(--primary);
+    font-size:18px;
+    margin:24px 0 12px;
+    font-weight:700;
+  }
+
+  p{
+    color:#333;
+    margin:0 0 16px;
+    line-height:1.7;
+  }
+
+  ul{
+    color:#333;
+    margin:0 0 16px;
+    padding-left:24px;
+  }
+
+  li{
+    margin-bottom:8px;
+  }
 
   .info-box{
     background:#e6f7f7;
+    border:2px solid #b3e5e4;
     border-left:4px solid var(--primary);
     padding:24px;
     border-radius:12px;
     margin:24px 0;
+  }
+
+  .info-box.warning{
+    background:#fff3cd;
+    border-color:#ffc107;
+  }
+
+  .to-complete{
+    background:#fff3cd;
+    border:2px solid #ffc107;
+    padding:16px;
+    border-radius:8px;
+    margin:16px 0;
+    font-style:italic;
+    color:#856404;
   }
 
   footer{
@@ -57,10 +122,28 @@
   }
   footer a{color:var(--primary);text-decoration:none;font-weight:600}
   footer a:hover{text-decoration:underline}
+
+  @media(max-width:768px){
+    body{padding:16px;}
+    .card{padding:24px 20px;}
+    .nav-header{flex-direction:column;align-items:flex-start;gap:12px;}
+    .nav-links{flex-wrap:wrap;}
+    h2{font-size:20px;}
+    h3{font-size:16px;}
+  }
 </style>
 </head>
 <body>
   <div class="wrap">
+    <div class="nav-header">
+      <h1>📋 Mentions Légales</h1>
+      <nav class="nav-links">
+        <a href="index.html">🏠 Accueil</a>
+        <a href="recherche.html">🔍 Rechercher</a>
+        <a href="statistiques.html">📊 Statistiques</a>
+      </nav>
+    </div>
+
     <div class="card">
       <h2>Mentions Légales</h2>
       <p>Ce site est édité à titre bénévole dans le cadre d’un projet personnel visant à faciliter la mise en relation entre particuliers et professionnels spécialisés dans l’accompagnement du TSA (autisme).</p>
@@ -71,27 +154,91 @@
     </div>
 
     <div class="card">
-      <h2>Protection des données</h2>
+      <h2 id="confidentialite">Politique de Confidentialité & RGPD</h2>
+      <h3>Données collectées sur les particuliers</h3>
       <div class="info-box">
-        <p><strong>Bonne nouvelle :</strong> ce site ne collecte aucune donnée personnelle sur les particuliers.</p>
+        <p><strong>✅ Bonne nouvelle :</strong> Cette plateforme ne collecte AUCUNE donnée personnelle des particuliers qui utilisent la recherche.</p>
+        <ul>
+          <li>Aucune inscription n'est requise</li>
+          <li>Aucun cookie n'est utilisé</li>
+          <li>Les recherches ne sont pas enregistrées</li>
+          <li>Aucune donnée n'est transmise à des tiers</li>
+        </ul>
       </div>
-      <p>Aucun compte, aucun cookie publicitaire, et aucune donnée de navigation n’est enregistrée. Les recherches effectuées par les utilisateurs ne sont ni stockées ni partagées.</p>
+
+      <h3>Données des professionnels référencés</h3>
+      <p>Les professionnels qui s'inscrivent volontairement sur cette plateforme fournissent les informations suivantes :</p>
+      <ul>
+        <li><strong>Identité</strong> : Nom, prénom, profession</li>
+        <li><strong>Contact</strong> : Email, téléphone</li>
+        <li><strong>Localisation</strong> : Département, commune, rayon d'intervention</li>
+        <li><strong>Pratique</strong> : Publics accompagnés, modes d'intervention, disponibilités</li>
+      </ul>
+
+      <p><Les professionnels s'inscrivent volontairement.</p>
+      <p><strong>Finalité :</strong> Mise en relation avec des particuliers recherchant un professionnel spécialisé en autisme.</p>
+      <p><strong>Durée de conservation :</strong> Les données sont conservées tant que le professionnel souhaite être référencé. Il peut demander leur suppression à tout moment.</p>
+
+      <h3>Cookies</h3>
+      <div class="info-box">
+        <p><strong>Cette plateforme utilise uniquement :</strong></p>
+        <ul>
+          <li><strong>LocalStorage technique</strong> : Pour mettre en cache les données pendant 1 heure et améliorer la vitesse de navigation</li>
+          <li>Aucun cookie publicitaire</li>
+          <li>Aucun cookie de tracking</li>
+          <li>Aucune transmission à des tiers</li>
+        </ul>
+      </div>
     </div>
 
     <div class="card">
-      <h2>Cookies</h2>
-      <p>Ce site n’utilise pas de cookies. Il emploie uniquement un stockage local temporaire (<strong>localStorage</strong>) pour accélérer l’affichage des résultats pendant la navigation.</p>
+      <h2>Propriété Intellectuelle</h2>
+      <p>L'ensemble du contenu de cette plateforme (structure, design, code) est la propriété de son créateur.</p>
+      <p>Toute reproduction, même partielle, est interdite sans autorisation préalable.</p>
     </div>
 
     <div class="card">
       <h2>Responsabilité</h2>
-      <p>Ce site est un outil gratuit et indépendant de mise en relation. Les informations affichées sur les professionnels sont fournies par ces derniers. L’éditeur ne peut être tenu responsable d’éventuelles erreurs ou de la qualité des prestations proposées.</p>
+      
+      <div class="info-box warning">
+        <p><strong>⚠️ Points importants :</strong></p>
+        <ul>
+          <li>Cette plateforme est un <strong>outil de mise en relation</strong> gratuit et indépendant</li>
+          <li>Elle ne garantit pas la qualité des prestations des professionnels référencés</li>
+          <li>Les informations affichées sont fournies par les professionnels eux-mêmes</li>
+          <li>La plateforme ne peut être tenue responsable d'informations erronées ou obsolètes</li>
+          <li>Les calculs de distance sont approximatifs et ne garantissent pas une intervention dans votre commune</li>
+        </ul>
+      </div>
+
+      <p>Il appartient aux particuliers de :</p>
+      <ul>
+        <li>Vérifier les qualifications et agréments des professionnels contactés</li>
+        <li>S'assurer de l'adéquation des prestations proposées à leurs besoins</li>
+        <li>Établir un contrat direct avec le professionnel choisi</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 id="contact">Contact</h2>
+      <p>Pour toute question concernant cette plateforme :</p>
+      <p><strong>Email :</strong> [À COMPLÉTER : votre email]</p>
+    </div>
+
+    <div class="card">
+      <h2>Évolution des Mentions Légales</h2>
+      <p>Ces mentions légales peuvent être modifiées à tout moment. La version en vigueur est celle accessible en ligne.</p>
+      <p><strong>Dernière mise à jour :</strong> [À COMPLÉTER : date]</p>
     </div>
 
     <footer>
-      <p>© 2025 - Plateforme de mise en relation TSA</p>
+      <p>
+        <a href="index.html">Accueil</a> • 
+        <a href="recherche.html">Rechercher</a> • 
+        <a href="statistiques.html">Statistiques</a>
+      </p>
+      <p style="margin-top:12px;font-size:13px">© 2025 - Plateforme de mise en relation TSA</p>
     </footer>
   </div>
 </body>
 </html>
-
