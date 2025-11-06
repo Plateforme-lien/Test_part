@@ -1,1 +1,885 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Recherche - Trouver un Professionnel TSA</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --card:#fff;
+    --primary:#0ea5a4;
+    --primary-dark:#0d8887;
+    --muted:#6b7280;
+    --section-bg:#f9fafb;
+  }
 
+  body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    margin:0;
+    padding:24px;
+    line-height:1.6;
+  }
+
+  .wrap{max-width:980px;margin:18px auto}
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:32px 36px;
+    box-shadow:0 8px 30px rgba(2,6,23,0.06);
+    margin-bottom:24px;
+  }
+
+  .nav-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:32px;
+    padding-bottom:16px;
+    border-bottom:2px solid #e6eef6;
+  }
+  .nav-header h1{
+    margin:0;
+    font-size:22px;
+    color:#0f1724;
+  }
+  .nav-links{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:color 0.2s;
+  }
+  .nav-links a:hover{color:var(--primary);}
+
+  .search-form{
+    display:grid;
+    gap:1.5rem;
+  }
+
+  label{
+    display:block;
+    font-weight:600;
+    color:#333;
+    margin-bottom:0.5rem;
+  }
+
+  .required::after{
+    content:" *";
+    color:#dc2626;
+  }
+
+  input[type="text"], select{
+    width:100%;
+    padding:0.75rem;
+    border:2px solid #e5e7eb;
+    border-radius:8px;
+    font-size:1rem;
+    transition:border-color 0.3s;
+  }
+
+  input[type="text"]:focus, select:focus{
+    outline:none;
+    border-color:var(--primary);
+  }
+
+  .search-btn{
+    background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color:white;
+    border:none;
+    padding:1rem 2rem;
+    border-radius:8px;
+    font-size:1.1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform 0.2s, box-shadow 0.3s;
+    margin-top:1rem;
+  }
+
+  .search-btn:hover:not(:disabled){
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14, 165, 164, 0.4);
+  }
+
+  .search-btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+  }
+
+  .alert{
+    padding:1rem;
+    border-radius:8px;
+    margin-bottom:1rem;
+  }
+
+  .alert.warning{
+    background:#fff3cd;
+    border:1px solid #ffc107;
+    color:#856404;
+  }
+
+  .alert.info{
+    background:#d1ecf1;
+    border:1px solid #17a2b8;
+    color:#0c5460;
+  }
+
+  .alert.success{
+    background:#d4edda;
+    border:1px solid #28a745;
+    color:#155724;
+  }
+
+  .loading-state{
+    text-align:center;
+    padding:2rem;
+    background:#fff3cd;
+    border-radius:12px;
+    border:2px solid #ffc107;
+  }
+
+  .loading-spinner{
+    display:inline-block;
+    width:40px;
+    height:40px;
+    border:4px solid rgba(14,165,164,0.2);
+    border-radius:50%;
+    border-top-color:var(--primary);
+    animation:spin 1s linear infinite;
+    margin-bottom:1rem;
+  }
+
+  @keyframes spin{
+    to{transform:rotate(360deg)}
+  }
+
+  .result-card{
+    background:white;
+    border-radius:12px;
+    padding:1.5rem;
+    margin-bottom:1.5rem;
+    border:2px solid #e5e7eb;
+    transition:all 0.3s;
+  }
+
+  .result-card:hover{
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    transform:translateY(-2px);
+  }
+
+  .result-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:1rem;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+
+  .result-title{
+    font-size:1.3rem;
+    font-weight:700;
+    color:#111;
+  }
+
+  .result-profession{
+    color:var(--primary);
+    font-weight:600;
+    margin-top:0.25rem;
+  }
+
+  .badge{
+    padding:0.5rem 1rem;
+    border-radius:20px;
+    font-size:0.85rem;
+    font-weight:600;
+    white-space:nowrap;
+  }
+
+  .badge.bientot{
+    background:#1a9320;
+    color:#ffffff;
+  }
+
+  .badge.prochainement{
+    background:#66BB6A;
+    color:#ffffff;
+  }
+
+  .badge.plus-tard{
+    background:#a28e5f;
+    color:#ffffff;
+  }
+
+  .result-section{
+    margin-top:1rem;
+    padding:1rem;
+    background:#f9fafb;
+    border-radius:8px;
+  }
+
+  .section-title{
+    font-weight:600;
+    color:#555;
+    margin-bottom:0.75rem;
+    font-size:0.9rem;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+  }
+
+  .info-item{
+    margin-bottom:0.5rem;
+    color:#333;
+  }
+
+  .info-item span{
+    font-weight:600;
+    color:#666;
+  }
+
+  .info-item a{
+    color:var(--primary);
+    text-decoration:none;
+  }
+
+  .info-item a:hover{
+    text-decoration:underline;
+  }
+
+  .no-results{
+    text-align:center;
+    padding:3rem 1rem;
+    color:var(--muted);
+    background:white;
+    border-radius:12px;
+  }
+
+  .no-results h3{
+    color:#333;
+    margin-bottom:0.5rem;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:48px;
+    padding-top:32px;
+    border-top:2px solid #e6eef6;
+    color:var(--muted);
+    font-size:14px;
+  }
+  footer a{color:var(--primary);text-decoration:none;font-weight:600}
+  footer a:hover{text-decoration:underline}
+
+  @media(max-width:768px){
+    body{padding:16px;}
+    .card{padding:24px 20px;}
+    .nav-header{flex-direction:column;align-items:flex-start;gap:12px;}
+    .nav-links{flex-wrap:wrap;}
+    .result-header{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav-header">
+      <h1>🔍 Recherche</h1>
+      <nav class="nav-links">
+        <a href="index.html">🏠 Accueil</a>
+        <a href="statistiques.html">📊 Statistiques</a>
+        <a href="mentions.html">📋 Mentions légales</a>
+      </nav>
+    </div>
+
+    <div id="loading-initial" class="card">
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <h3 style="margin:0 0 0.5rem;color:#0f1724">⏳ Chargement des données...</h3>
+        <p style="margin:0;color:var(--muted)">Merci de patienter, nous récupérons la liste des professionnels</p>
+      </div>
+    </div>
+
+    <div id="content-ready" style="display:none">
+      <div class="card">
+        <h2 style="margin:0 0 1rem;font-size:22px;color:#0f1724;font-weight:700">Rechercher un professionnel</h2>
+        <p style="color:var(--muted);margin:0 0 1.5rem">Remplissez les critères de recherche pour trouver un professionnel adapté à vos besoins.</p>
+
+        <div class="alert warning">
+          <strong>⚠️ Attention</strong><br>
+          Tous les champs sont obligatoires pour lancer la recherche.
+        </div>
+
+        <form class="search-form" onsubmit="return false;">
+          <div>
+            <label for="metier" class="required">Type de professionnel recherché</label>
+            <select id="metier">
+              <option value="">-- Sélectionnez --</option>
+              <option value="Éducateur spécialisé">Éducateur spécialisé</option>
+              <option value="Ergothérapeute">Ergothérapeute</option>
+              <option value="Psychologue">Psychologue</option>
+              <option value="Psychomotricien">Psychomotricien</option>
+              <option value="Orthophoniste">Orthophoniste</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="tranche" class="required">Tranche d'âge</label>
+            <select id="tranche">
+              <option value="">-- Sélectionnez --</option>
+              <option value="0-6">Enfants (0-6 ans)</option>
+              <option value="7-12">Enfants (7-12 ans)</option>
+              <option value="13-18">Adolescents (13-18 ans)</option>
+              <option value="18+">Adultes (18+)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="departement" class="required">Département</label>
+            <select id="departement" onchange="chargerCommunes()">
+              <option value="">-- Chargement... --</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="rechercheCommune" class="required">Commune</label>
+            <input 
+              type="text" 
+              id="rechercheCommune" 
+              placeholder="🔍 Tapez pour filtrer..."
+              oninput="filtrerCommunes()"
+            >
+            <select id="commune" size="5" style="height:150px;margin-top:8px;">
+              <option value="">-- Choisissez d'abord un département --</option>
+            </select>
+          </div>
+
+          <button type="button" class="search-btn" id="btn-recherche" onclick="rechercher()">
+            🔍 Lancer la recherche
+          </button>
+        </form>
+      </div>
+
+      <div id="resultats"></div>
+    </div>
+
+    <footer>
+      <p>
+        <a href="index.html">Accueil</a> • 
+        <a href="statistiques.html">Statistiques</a> • 
+        <a href="mentions.html">Mentions légales</a>
+      </p>
+      <p style="margin-top:12px;font-size:13px">© 2025 - Plateforme de mise en relation TSA</p>
+    </footer>
+  </div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
+    const CACHE_KEY = 'tsa_data';
+    const CACHE_DURATION = 60 * 60 * 1000;
+
+    const COLONNES = {
+      email: 'Email',
+      nom: 'Nom',
+      prenom: 'Prenom',
+      telephone: 'Telephone',
+      profession: 'Profession',
+      publics: 'Publics',
+      modes: 'Modes',
+      visio: 'Visio',
+      departement: 'Departement',
+      commune: 'Commune',
+      rayon: 'Rayon',
+      disponibilite: 'Disponibilite',
+      dateDisponibilite: 'DateDisponibilite'
+    };
+
+    const API_DEPARTEMENTS = 'https://geo.api.gouv.fr/departements';
+    const API_COMMUNES = (codeDept) => `https://geo.api.gouv.fr/departements/${codeDept}/communes?fields=nom,code,centre&format=json&geometry=centre`;
+
+    let professionnels = [];
+    let toutesLesCommunesDisponibles = [];
+    let tousLesDepartements = [];
+    let cacheCommunesParDept = {};
+
+    function normaliser(str) {
+      if (!str) return "";
+      return str.toString().trim().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,"");
+    }
+
+    function distanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2)**2 + 
+                Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * 
+                Math.sin(dLon/2)**2;
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    function parseCSV(text) {
+      const lines = text.split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+      const data = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const values = [];
+        let current = '', inQuotes = false;
+        
+        for (let j = 0; j < lines[i].length; j++) {
+          const char = lines[i][j];
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) {
+            values.push(current.trim().replace(/^"|"$/g,''));
+            current = '';
+          }
+          else current += char;
+        }
+        values.push(current.trim().replace(/^"|"$/g,''));
+        
+        const row = {};
+        headers.forEach((header, index) => {
+          row[header] = values[index] || '';
+        });
+        data.push(row);
+      }
+      return data;
+    }
+
+    async function chargerProfessionnels() {
+      try {
+        console.log('⏳ Chargement des professionnels...');
+        
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const {data, timestamp} = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            console.log('✅ Données chargées depuis le cache');
+            professionnels = data.map(p => {
+              const publicsRaw = p[COLONNES.publics] || '';
+              p.publics = publicsRaw.split(',').map(s => s.trim()).filter(s => s).map(normaliser);
+              p.publicsOriginal = publicsRaw.split(',').map(s => s.trim()).filter(s => s);
+              return p;
+            });
+            afficherFormulaireRecherche();
+            return;
+          }
+        }
+
+        const response = await fetch(SCRIPT_URL);
+        if (!response.ok) throw new Error('Erreur HTTP: ' + response.status);
+        
+        const csvText = await response.text();
+        const results = parseCSV(csvText);
+        
+        professionnels = results.map(p => {
+          const publicsRaw = p[COLONNES.publics] || '';
+          p.publics = publicsRaw.split(',').map(s => s.trim()).filter(s => s).map(normaliser);
+          p.publicsOriginal = publicsRaw.split(',').map(s => s.trim()).filter(s => s);
+          return p;
+        });
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: results,
+          timestamp: Date.now()
+        }));
+
+        console.log('✅ Professionnels chargés:', professionnels.length);
+        afficherFormulaireRecherche();
+        
+      } catch (error) {
+        console.error('❌ Erreur chargement professionnels:', error);
+        document.getElementById('loading-initial').innerHTML = `
+          <div class="alert warning">
+            <strong>❌ Erreur de chargement</strong><br>
+            Impossible de charger les données des professionnels. Veuillez réessayer plus tard.<br>
+            <button onclick="location.reload()" style="margin-top:1rem;padding:0.5rem 1rem;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer">🔄 Réessayer</button>
+          </div>`;
+      }
+    }
+
+    function afficherFormulaireRecherche() {
+      document.getElementById('loading-initial').style.display = 'none';
+      document.getElementById('content-ready').style.display = 'block';
+    }
+
+    async function chargerDepartements() {
+      try {
+        const response = await fetch(API_DEPARTEMENTS);
+        if (!response.ok) throw new Error('Erreur chargement départements');
+        
+        tousLesDepartements = await response.json();
+        
+        const selectDept = document.getElementById('departement');
+        selectDept.innerHTML = '<option value="">-- Sélectionnez --</option>';
+        
+        tousLesDepartements
+          .sort((a, b) => a.code.localeCompare(b.code))
+          .forEach(dept => {
+            const option = document.createElement('option');
+            option.value = dept.code;
+            option.textContent = `${dept.code} - ${dept.nom}`;
+            selectDept.appendChild(option);
+          });
+        
+        console.log('✅ Départements chargés:', tousLesDepartements.length);
+      } catch (error) {
+        console.error('❌ Erreur chargement départements:', error);
+      }
+    }
+
+    async function chargerCommunes() {
+      const selectDept = document.getElementById('departement');
+      const selectCommune = document.getElementById('commune');
+      const rechercheCommune = document.getElementById('rechercheCommune');
+      
+      const codeDept = selectDept.value;
+      
+      rechercheCommune.value = '';
+      selectCommune.innerHTML = '<option value="">-- Toutes les communes --</option>';
+      toutesLesCommunesDisponibles = [];
+      
+      if (!codeDept) {
+        selectCommune.innerHTML = '<option value="">-- Choisissez d\'abord un département --</option>';
+        return;
+      }
+
+      if (cacheCommunesParDept[codeDept]) {
+        toutesLesCommunesDisponibles = cacheCommunesParDept[codeDept];
+        afficherCommunes(toutesLesCommunesDisponibles);
+        return;
+      }
+
+      selectCommune.innerHTML = '<option value="">⏳ Chargement...</option>';
+      
+      try {
+        const response = await fetch(API_COMMUNES(codeDept));
+        if (!response.ok) throw new Error('Erreur chargement communes');
+        
+        const communes = await response.json();
+        communes.sort((a, b) => a.nom.localeCompare(b.nom));
+        
+        cacheCommunesParDept[codeDept] = communes;
+        toutesLesCommunesDisponibles = communes;
+        
+        afficherCommunes(communes);
+      } catch (error) {
+        console.error('❌ Erreur chargement communes:', error);
+        selectCommune.innerHTML = '<option value="">❌ Erreur de chargement</option>';
+      }
+    }
+
+    function afficherCommunes(communes) {
+      const selectCommune = document.getElementById('commune');
+      selectCommune.innerHTML = '<option value="">-- Toutes les communes --</option>';
+      
+      communes.forEach(c => {
+        const option = document.createElement('option');
+        option.value = c.nom;
+        option.textContent = c.nom;
+        selectCommune.appendChild(option);
+      });
+    }
+
+    function filtrerCommunes() {
+      const recherche = normaliser(document.getElementById('rechercheCommune').value);
+      const selectCommune = document.getElementById('commune');
+      
+      selectCommune.innerHTML = '<option value="">-- Toutes les communes --</option>';
+      
+      if (recherche === '') {
+        afficherCommunes(toutesLesCommunesDisponibles);
+        return;
+      }
+      
+      const communesFiltrees = toutesLesCommunesDisponibles.filter(c => 
+        normaliser(c.nom).startsWith(recherche)
+      );
+      
+      if (communesFiltrees.length === 0) {
+        selectCommune.innerHTML = '<option value="">❌ Aucune commune trouvée</option>';
+        return;
+      }
+      
+      afficherCommunes(communesFiltrees);
+    }
+
+    async function rechercher() {
+      const metier = normaliser(document.getElementById('metier').value);
+      const tranche = normaliser(document.getElementById('tranche').value);
+      const departement = document.getElementById('departement').value;
+      const communePart = document.getElementById('commune').value;
+      
+      const div = document.getElementById('resultats');
+      
+      if (!metier || !tranche || !departement || !communePart) {
+        div.innerHTML = `
+          <div class="alert warning">
+            <strong>⚠️ Champs manquants</strong><br>
+            Merci de remplir tous les champs avant de lancer la recherche.
+          </div>`;
+        div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      
+      div.innerHTML = '<div class="card"><div class="loading-state"><div class="loading-spinner"></div><h3 style="margin:0">🔍 Recherche en cours...</h3></div></div>';
+      
+      let coordsParticulier = null;
+      const communeDataPart = toutesLesCommunesDisponibles.find(c => normaliser(c.nom) === normaliser(communePart));
+      if (communeDataPart && communeDataPart.centre) {
+        coordsParticulier = {
+          lon: communeDataPart.centre.coordinates[0],
+          lat: communeDataPart.centre.coordinates[1]
+        };
+      }
+
+      const matches = [];
+      
+      for (const p of professionnels) {
+        const pMetier = normaliser(p[COLONNES.profession] || '');
+        const pTranches = p.publics || [];
+        const dispo = normaliser(p[COLONNES.disponibilite] || '');
+        
+        if (metier && pMetier !== metier) continue;
+        if (tranche && !pTranches.includes(tranche)) continue;
+        if (!dispo || dispo === 'non' || dispo === 'non disponible') continue;
+        
+        const geoResult = await verifierGeographie(p, departement, communePart, coordsParticulier);
+        if (!geoResult.ok) continue;
+        
+        matches.push({
+          ...p,
+          distance: geoResult.distance
+        });
+      }
+      
+      matches.sort((a, b) => {
+        if (a.distance === null && b.distance === null) return 0;
+        if (a.distance === null) return 1;
+        if (b.distance === null) return -1;
+        return a.distance - b.distance;
+      });
+      
+      afficherResultats(matches, tranche);
+    }
+
+    async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
+      const rayonTexte = (professionnel[COLONNES.rayon] || "Aucun - en cabinet").trim();
+      const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
+      const communeProNom = professionnel[COLONNES.commune] || "";
+      
+      const codeDeptPro = deptProRaw.split('-')[0].trim();
+      
+      if (rayonTexte === "Tout mon département") {
+        const ok = normaliser(codeDeptPro) === normaliser(deptParticulier);
+        return { ok, distance: ok ? 0 : null };
+      }
+      
+      if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
+      
+      let coordsPro = null;
+      
+      if (cacheCommunesParDept[codeDeptPro]) {
+        const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+        if (communePro && communePro.centre) {
+          coordsPro = {
+            lon: communePro.centre.coordinates[0],
+            lat: communePro.centre.coordinates[1]
+          };
+        }
+      }
+      
+      if (!coordsPro && codeDeptPro) {
+        try {
+          const response = await fetch(API_COMMUNES(codeDeptPro));
+          const communes = await response.json();
+          cacheCommunesParDept[codeDeptPro] = communes;
+          
+          const communePro = communes.find(c => normaliser(c.nom) === normaliser(communeProNom));
+          if (communePro && communePro.centre) {
+            coordsPro = {
+              lon: communePro.centre.coordinates[0],
+              lat: communePro.centre.coordinates[1]
+            };
+          }
+        } catch (error) {
+          return { ok: false, distance: null };
+        }
+      }
+      
+      if (!coordsPro) return { ok: false, distance: null };
+      
+      const dist = distanceKm(
+        coordsParticulier.lat, coordsParticulier.lon,
+        coordsPro.lat, coordsPro.lon
+      );
+      
+      if (rayonTexte === "Aucun - en cabinet") {
+        return { ok: dist <= 25, distance: dist };
+      }
+      
+      let rayonPro = parseFloat(rayonTexte.replace(/[^\d.]/g, ""));
+      if (Number.isNaN(rayonPro)) rayonPro = 0;
+      
+      return { ok: dist <= rayonPro, distance: dist };
+    }
+
+    function calculerBadgeDisponibilite(disponibilite, dateDispo) {
+      const dispoLower = normaliser(disponibilite);
+
+      if (!dispoLower || dispoLower.includes('non')) {
+        return null;
+      }
+
+      const dateDispoObj = new Date(dateDispo);
+      if (isNaN(dateDispoObj.getTime())) {
+        return null;
+      }
+
+      const aujourdhui = new Date();
+      const diffTime = dateDispoObj - aujourdhui;
+      const diffJours = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const dateFormatee = dateDispoObj.toLocaleDateString('fr-FR', options);
+
+      if (diffJours <= 60) {
+        return { class: 'bientot', texte: `Disponible à partir du ${dateFormatee}` };
+      } else if (diffJours <= 120) {
+        return { class: 'prochainement', texte: `Disponible à partir du ${dateFormatee}` };
+      } else {
+        return { class: 'plus-tard', texte: `Disponible à partir du ${dateFormatee}` };
+      }
+    }
+
+    function afficherResultats(matches, tranche) {
+      const div = document.getElementById('resultats');
+      
+      if (matches.length === 0) {
+        div.innerHTML = `
+          <div class="card">
+            <div class="no-results">
+              <h3>😔 Aucun professionnel trouvé</h3>
+              <p>Essayez d'élargir vos critères de recherche.</p>
+            </div>
+          </div>`;
+        div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+      
+      let html = `<div class="card"><div class="alert success">
+        <strong>✅ ${matches.length} professionnel(s) trouvé(s)</strong> (triés du plus proche au plus éloigné)
+      </div></div>`;
+      
+      matches.forEach((p) => {
+        const nom = p[COLONNES.nom] || 'Nom';
+        const prenom = p[COLONNES.prenom] || 'Prénom';
+        const email = p[COLONNES.email] || 'Non renseigné';
+        const tel = p[COLONNES.telephone] || 'Non renseigné';
+        const metierP = p[COLONNES.profession] || 'Non renseigné';
+        const publics = p.publicsOriginal.join(', ') || 'Non renseigné';
+        const dept = p[COLONNES.departement] || 'Non renseigné';
+        const commune = p[COLONNES.commune] || 'Non renseignée';
+        const rayon = p[COLONNES.rayon] || 'Non renseigné';
+        const dispo = p[COLONNES.disponibilite] || 'Non renseigné';
+        const dateDispo = p[COLONNES.dateDisponibilite] || '';
+        const visio = p[COLONNES.visio] || 'Non renseigné';
+        
+        const badgeInfo = calculerBadgeDisponibilite(dispo, dateDispo);
+        
+        const trancheRecherchee = p.publicsOriginal.find(pub => normaliser(pub).includes(tranche));
+        const publicsHTML = trancheRecherchee 
+          ? `<strong style="color: var(--primary); font-size: 1.05em;">✓ ${trancheRecherchee}</strong>`
+          : publics;
+        
+        const rayonLower = normaliser(rayon);
+        const seDeplace = !rayonLower.includes('cabinet');
+        
+        let interventionInfo = '';
+        if (seDeplace) {
+          interventionInfo = `
+            <div class="info-item" style="background: #e8f5e9; padding: 0.75rem; border-radius: 6px; border-left: 4px solid #4caf50;">
+              <span>🚗 Se déplace :</span> <strong style="color: #2e7d32;">Oui</strong>
+            </div>`;
+        } else {
+          interventionInfo = `
+            <div class="info-item" style="background: #fff3e0; padding: 0.75rem; border-radius: 6px; border-left: 4px solid #ff9800;">
+              <span>🏢 Cabinet uniquement :</span> <strong style="color: #e65100;">Vous devez vous déplacer à ${commune}</strong>
+            </div>`;
+        }
+        
+        const distanceHTML = p.distance !== null ? `
+          <div class="info-item"><span>📏 Distance estimée :</span> ${Math.round(p.distance)} km</div>
+        ` : '';
+        
+        const metierHTML = `<strong style="color: var(--primary); font-size: 1.05em;">${metierP}</strong>`;
+        
+        html += `
+          <div class="card">
+            <div class="result-card">
+              <div class="result-header">
+                <div>
+                  <div class="result-title">${prenom} ${nom}</div>
+                  <div class="result-profession">${metierHTML}</div>
+                </div>
+                <div class="badge ${badgeInfo.class}">${badgeInfo.texte}</div>
+              </div>
+
+              <div class="result-section">
+                <div class="section-title">📞 Coordonnées</div>
+                <div class="info-item">
+                  <span>Email :</span> 
+                  ${email !== 'Non renseigné' ? `<a href="mailto:${email}">${email}</a>` : email}
+                </div>
+                <div class="info-item">
+                  <span>Téléphone :</span> ${tel}
+                </div>
+              </div>
+              
+              <div class="result-section">
+                <div class="section-title">👥 Pratique professionnelle</div>
+                <div class="info-item">
+                  <span>Public concerné par votre recherche :</span> ${publicsHTML}
+                </div>
+                <div class="info-item">
+                  <span>Visio :</span> ${visio}
+                </div>
+              </div>
+
+              <div class="result-section">
+                <div class="section-title">📍 Localisation & Intervention</div>
+                ${interventionInfo}
+                ${distanceHTML}
+                <div class="info-item"><span>Département :</span> ${dept}</div>
+                <div class="info-item"><span>Commune :</span> ${commune}</div>
+                <div class="info-item" style="font-style:italic; font-size:0.9rem; color:#666; margin-top:0.5rem;">
+                  ℹ️ Les calculs de distance sont approximatifs (±5 km).
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+      
+      div.innerHTML = html;
+      
+      setTimeout(() => {
+        div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      console.log('🚀 Initialisation...');
+      await chargerDepartements();
+      await chargerProfessionnels();
+      console.log('✅ Prêt !');
+    });
+  </script>
+</body>
+</html>
