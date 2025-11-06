@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Trouver un Professionnel TSA</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --card:#fff;
+    --primary:#0ea5a4;
+    --primary-dark:#0d8887;
+    --muted:#6b7280;
+    --section-bg:#f9fafb;
+  }
+
+  body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    margin:0;
+    padding:24px;
+    line-height:1.6;
+  }
+
+  .wrap{max-width:980px;margin:18px auto}
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:32px 36px;
+    box-shadow:0 8px 30px rgba(2,6,23,0.06);
+    margin-bottom:24px;
+  }
+
+  .nav-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:32px;
+    padding-bottom:16px;
+    border-bottom:2px solid #e6eef6;
+  }
+  .nav-header h1{
+    margin:0;
+    font-size:22px;
+    color:#0f1724;
+  }
+  .nav-links{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:color 0.2s;
+  }
+  .nav-links a:hover{color:var(--primary);}
+
+  .hero{
+    text-align:center;
+    padding:40px 0 32px;
+  }
+  .hero h1{
+    margin:0 0 16px;
+    font-size:32px;
+    color:#0f1724;
+    font-weight:700;
+  }
+  .hero .subtitle{
+    font-size:18px;
+    color:var(--muted);
+    margin:0 0 32px;
+    line-height:1.6;
+  }
+
+  .cta-button{
+    display:inline-block;
+    background:linear-gradient(135deg, #0ea5a4 0%, #0d8887 100%);
+    color:#fff;
+    padding:16px 40px;
+    font-size:17px;
+    font-weight:700;
+    border-radius:12px;
+    box-shadow:0 4px 16px rgba(14,165,164,0.4);
+    text-decoration:none;
+    transition:all 0.2s;
+  }
+  .cta-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,165,164,0.5);
+  }
+
+  .features{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:24px;
+    margin:32px 0;
+  }
+  .feature{
+    background:var(--section-bg);
+    padding:24px;
+    border-radius:12px;
+    border-left:4px solid var(--primary);
+  }
+  .feature-icon{font-size:40px;margin-bottom:12px}
+  .feature h3{margin:0 0 12px;font-size:18px;color:#0f1724;font-weight:700}
+  .feature p{margin:0;color:var(--muted);font-size:15px;line-height:1.5}
+
+  .info-box{
+    background:#e6f7f7;
+    border:2px solid #b3e5e4;
+    border-left:4px solid var(--primary);
+    padding:24px;
+    border-radius:12px;
+    margin:32px 0;
+  }
+  .info-box h3{margin:0 0 12px;color:#0f1724;font-size:18px;font-weight:700}
+  .info-box p{margin:0;color:#0f1724;font-size:15px;line-height:1.6}
+  .info-box ul{margin:12px 0 0;padding-left:20px;color:#0f1724}
+  .info-box li{margin:8px 0}
+
+  .steps{margin:32px 0}
+  .step{display:flex;gap:20px;margin-bottom:24px;align-items:start;}
+  .step-number{
+    background:var(--primary);
+    color:white;
+    min-width:40px;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:700;
+    flex-shrink:0;
+  }
+  .step-content h4{margin:0 0 8px;font-size:16px;color:#0f1724;font-weight:700}
+  .step-content p{margin:0;color:var(--muted);font-size:15px}
+
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:24px;
+    margin:32px 0;
+  }
+  .stat-box{
+    background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color:white;
+    padding:32px;
+    border-radius:12px;
+    text-align:center;
+  }
+  .stat-number{
+    font-size:48px;
+    font-weight:700;
+    display:block;
+  }
+  .stat-label{
+    font-size:16px;
+    opacity:0.9;
+    margin-top:8px;
+  }
+
+  .loading-indicator{
+    display:inline-block;
+    width:20px;
+    height:20px;
+    border:3px solid rgba(255,255,255,0.3);
+    border-radius:50%;
+    border-top-color:white;
+    animation:spin 1s linear infinite;
+  }
+
+  @keyframes spin{
+    to{transform:rotate(360deg)}
+  }
+
+  footer{
+    text-align:center;
+    margin-top:48px;
+    padding-top:32px;
+    border-top:2px solid #e6eef6;
+    color:var(--muted);
+    font-size:14px;
+  }
+  footer a{color:var(--primary);text-decoration:none;font-weight:600}
+  footer a:hover{text-decoration:underline}
+
+  @media(max-width:768px){
+    body{padding:16px;}
+    .card{padding:24px 20px;}
+    .nav-header{flex-direction:column;align-items:flex-start;gap:12px;}
+    .nav-links{flex-wrap:wrap;}
+    .hero h1{font-size:26px;}
+    .hero .subtitle{font-size:16px;}
+    .features{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav-header">
+      <h1>🏠 Accueil</h1>
+      <nav class="nav-links">
+        <a href="recherche-particuliers.html">🔍 Rechercher</a>
+        <a href="statistiques-particuliers.html">📊 Statistiques</a>
+        <a href="mentions-particuliers.html">📋 Mentions légales</a>
+      </nav>
+    </div>
+
+    <div class="card">
+      <div class="hero">
+        <h1>🔍 Trouver un Professionnel TSA</h1>
+        <p class="subtitle">Recherchez un professionnel spécialisé dans l'autisme près de chez vous</p>
+        <a href="recherche-particuliers.html" class="cta-button">Commencer ma recherche</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 24px;font-size:22px;color:#0f1724;font-weight:700">Comment ça fonctionne ?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>Utilisez les filtres de recherche</h4>
+            <p>Sélectionnez le type de professionnel recherché, la tranche d'âge concernée, votre département et votre commune</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>Lancez la recherche</h4>
+            <p>Le système calcule automatiquement les professionnels disponibles dans un rayon géographique adapté</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>Consultez les résultats</h4>
+            <p>Découvrez les professionnels disponibles correspondant à vos critères, triés par distance</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4>Contactez directement</h4>
+            <p>Utilisez les informations de contact pour prendre rendez-vous</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 24px;font-size:22px;color:#0f1724;font-weight:700">À propos de cette plateforme</h2>
+      
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🎯</div>
+          <h3>Recherche personnalisée</h3>
+          <p>Trouvez des professionnels selon vos besoins spécifiques : tranche d'âge, profession, localisation.</p>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon">📍</div>
+          <h3>Calcul de distance</h3>
+          <p>Les résultats sont triés du plus proche au plus éloigné pour faciliter votre choix.</p>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon">✅</div>
+          <h3>Professionnels vérifiés</h3>
+          <p>Seuls les professionnels avec numéro ADELI ou SIRET sont référencés.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 24px;font-size:22px;color:#0f1724;font-weight:700">Professionnels référencés</h2>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <span class="stat-number" id="total-pros">
+            <span class="loading-indicator"></span>
+          </span>
+          <span class="stat-label">Professionnels</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number" id="total-depts">
+            <span class="loading-indicator"></span>
+          </span>
+          <span class="stat-label">Départements couverts</span>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <a href="recherche-particuliers.html" class="cta-button">🔍 Lancer une recherche</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="info-box">
+        <h3>⚠️ Points importants à savoir</h3>
+        <ul>
+          <li>Certains professionnels se déplacent, d'autres travaillent uniquement en cabinet</li>
+          <li>Le site affiche les professionnels susceptibles d'exercer autour de vous</li>
+          <li>Cette estimation reste approximative : elle ne garantit pas une intervention dans votre commune exacte</li>
+          <li>Les calculs de distance sont approximatifs (±5 km)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="info-box" style="background:#e8f5e9;border-color:#81c784">
+        <h3>💚 Plateforme gratuite et indépendante</h3>
+        <p>Cette plateforme est entièrement gratuite. Les professionnels référencés se sont inscrits volontairement pour faciliter l'accès aux soins.</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        <a href="recherche-particuliers.html">Rechercher</a> • 
+        <a href="statistiques-particuliers.html">Statistiques</a> • 
+        <a href="mentions-particuliers.html">Mentions légales</a>
+      </p>
+      <p style="margin-top:12px;font-size:13px">© 2025 - Plateforme de mise en relation TSA</p>
+    </footer>
+  </div>
+
+  <script>
+    // Chargement des statistiques
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
+    const CACHE_KEY = 'tsa_data';
+    const CACHE_DURATION = 60 * 60 * 1000; // 1 heure
+
+    function parseCSV(text) {
+      const lines = text.split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+      const data = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const values = [];
+        let current = '', inQuotes = false;
+        
+        for (let j = 0; j < lines[i].length; j++) {
+          const char = lines[i][j];
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) {
+            values.push(current.trim().replace(/^"|"$/g,''));
+            current = '';
+          }
+          else current += char;
+        }
+        values.push(current.trim().replace(/^"|"$/g,''));
+        
+        const row = {};
+        headers.forEach((header, index) => {
+          row[header] = values[index] || '';
+        });
+        data.push(row);
+      }
+      return data;
+    }
+
+    async function chargerStats() {
+      try {
+        // Vérifie le cache
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const {data, timestamp} = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            afficherStats(data);
+            return;
+          }
+        }
+
+        // Charge depuis Google Sheets
+        const response = await fetch(SCRIPT_URL);
+        const csvText = await response.text();
+        const data = parseCSV(csvText);
+        
+        // Stocke en cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data: data,
+          timestamp: Date.now()
+        }));
+        
+        afficherStats(data);
+      } catch (error) {
+        console.error('Erreur chargement stats:', error);
+        document.getElementById('total-pros').textContent = '-';
+        document.getElementById('total-depts').textContent = '-';
+      }
+    }
+
+    function afficherStats(data) {
+      // Compte les professionnels
+      document.getElementById('total-pros').textContent = data.length;
+      
+      // Compte les départements uniques
+      const depts = new Set();
+      data.forEach(p => {
+        const dept = p.Departement || '';
+        const codeDept = dept.split('-')[0].trim();
+        if (codeDept) depts.add(codeDept);
+      });
+      document.getElementById('total-depts').textContent = depts.size;
+    }
+
+    // Charge les stats au chargement de la page
+    chargerStats();
+  </script>
+</body>
+</html>
