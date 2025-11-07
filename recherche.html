@@ -276,6 +276,227 @@
   footer a{color:var(--primary);text-decoration:none;font-weight:600}
   footer a:hover{text-decoration:underline}
 
+  /* === STYLES MODAL === */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    animation: fadeIn 0.3s;
+  }
+
+  .modal-overlay.show {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    color: #0ea5a4;
+    font-size: 22px;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+    color: #111;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .contact-form label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+
+  .contact-form textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .char-counter {
+    text-align: right;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: -12px;
+  }
+
+  .char-counter.warning {
+    color: #f59e0b;
+  }
+
+  .char-counter.error {
+    color: #dc2626;
+  }
+
+  .contact-info-box {
+    background: #f0f9ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .contact-info-box p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .contact-warning {
+    background: #fff3e0;
+    border-left: 4px solid #ff9800;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 16px;
+  }
+
+  .contact-warning p {
+    margin: 0;
+    font-size: 13px;
+    color: #666;
+  }
+
+  .btn-send-message {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+  }
+
+  .btn-send-message:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(14, 165, 164, 0.4);
+  }
+
+  .btn-send-message:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .contact-status {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+
+  .contact-status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #28a745;
+  }
+
+  .contact-status.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #dc2626;
+  }
+
+  .btn-contact {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-contact:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media(max-width:768px){
     body{padding:16px;}
     .card{padding:24px 20px;}
@@ -287,6 +508,7 @@
 </head>
 <body>
   <div class="wrap">
+    <!-- NAVIGATION -->
     <div class="nav-header">
       <h1>🔍 Recherche</h1>
       <nav class="nav-links">
@@ -296,6 +518,7 @@
       </nav>
     </div>
 
+    <!-- LOADING INITIAL -->
     <div id="loading-initial" class="card">
       <div class="loading-state">
         <div class="loading-spinner"></div>
@@ -304,6 +527,7 @@
       </div>
     </div>
 
+    <!-- CONTENU PRINCIPAL -->
     <div id="content-ready" style="display:none">
       <div class="card">
         <h2 style="margin:0 0 1rem;font-size:22px;color:#0f1724;font-weight:700">Rechercher un professionnel</h2>
@@ -340,7 +564,7 @@
 
           <div>
             <label for="departement" class="required">Département</label>
-            <select id="departement" onchange="chargerCommunes()">
+            <select id="departement">
               <option value="">-- Chargement... --</option>
             </select>
           </div>
@@ -351,22 +575,23 @@
               type="text" 
               id="rechercheCommune" 
               placeholder="🔍 Tapez pour filtrer..."
-              oninput="filtrerCommunes()"
             >
             <select id="commune" size="5" style="height:150px;margin-top:8px;">
               <option value="">-- Choisissez d'abord un département --</option>
             </select>
           </div>
 
-          <button type="button" class="search-btn" id="btn-recherche" onclick="rechercher()">
+          <button type="button" class="search-btn" id="btn-recherche">
             🔍 Lancer la recherche
           </button>
         </form>
       </div>
 
+      <!-- ZONE RESULTATS -->
       <div id="resultats"></div>
     </div>
 
+    <!-- FOOTER -->
     <footer>
       <p>
         <a href="index.html">Accueil</a> • 
@@ -377,7 +602,78 @@
     </footer>
   </div>
 
+  <!-- MODAL FORMULAIRE DE CONTACT -->
+  <div id="modalContact" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>📧 Envoyer un message</h3>
+        <button class="modal-close" type="button">×</button>
+      </div>
+
+      <div class="contact-info-box">
+        <p>
+          <strong id="proNomModal"></strong><br>
+          <span id="proProfessionModal" style="color: var(--primary);"></span>
+        </p>
+      </div>
+
+      <form class="contact-form" onsubmit="return false;">
+        <div>
+          <label for="contactNom">Votre nom <span style="color:#dc2626">*</span></label>
+          <input 
+            type="text" 
+            id="contactNom" 
+            placeholder="Ex: Jean Dupont"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="contactEmail">Votre email <span style="color:#dc2626">*</span></label>
+          <input 
+            type="email" 
+            id="contactEmail" 
+            placeholder="votre.email@exemple.fr"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="contactMessage">
+            Votre message <span style="color:#dc2626">*</span>
+          </label>
+          <textarea 
+            id="contactMessage" 
+            placeholder="Décrivez brièvement votre situation et vos besoins..."
+            maxlength="500"
+            required
+          ></textarea>
+          <div id="charCounter" class="char-counter">0 / 500 caractères</div>
+        </div>
+
+        <div class="contact-warning">
+          <p>
+            ⏱️ <strong>Important :</strong> Vous ne pouvez envoyer qu'un seul message par professionnel 
+            toutes les 24h. Le professionnel vous répondra directement par email s'il a une place disponible.
+          </p>
+        </div>
+
+        <button 
+          type="button" 
+          id="btnEnvoyerMessage" 
+          class="btn-send-message"
+        >
+          📧 Envoyer le message
+        </button>
+
+        <div id="contactStatus" style="display:none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT ==================== -->
   <script>
+    // ============= CONFIGURATION =============
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
     const CACHE_KEY = 'tsa_data';
     const CACHE_DURATION = 60 * 60 * 1000;
@@ -395,17 +691,21 @@
       commune: 'Commune',
       rayon: 'Rayon',
       disponibilite: 'Disponibilite',
-      dateDisponibilite: 'DateDisponibilite'
+      dateDisponibilite: 'DateDisponibilite',
+      modeContact: 'ModeContact'
     };
 
     const API_DEPARTEMENTS = 'https://geo.api.gouv.fr/departements';
     const API_COMMUNES = (codeDept) => `https://geo.api.gouv.fr/departements/${codeDept}/communes?fields=nom,code,centre&format=json&geometry=centre`;
 
+    // ============= VARIABLES GLOBALES =============
     let professionnels = [];
     let toutesLesCommunesDisponibles = [];
     let tousLesDepartements = [];
     let cacheCommunesParDept = {};
+    let currentProEmail = null;
 
+    // ============= FONCTIONS UTILITAIRES =============
     function normaliser(str) {
       if (!str) return "";
       return str.toString().trim().toLowerCase()
@@ -453,6 +753,7 @@
       return data;
     }
 
+    // ============= CHARGEMENT DONNÉES =============
     async function chargerProfessionnels() {
       try {
         console.log('⏳ Chargement des professionnels...');
@@ -611,6 +912,7 @@
       afficherCommunes(communesFiltrees);
     }
 
+    // ============= RECHERCHE =============
     async function rechercher() {
       const metier = normaliser(document.getElementById('metier').value);
       const tranche = normaliser(document.getElementById('tranche').value);
@@ -791,6 +1093,7 @@
         const dispo = p[COLONNES.disponibilite] || 'Non renseigné';
         const dateDispo = p[COLONNES.dateDisponibilite] || '';
         const visio = p[COLONNES.visio] || 'Non renseigné';
+        const modeContact = p[COLONNES.modeContact] || 'direct';
         
         const badgeInfo = calculerBadgeDisponibilite(dispo, dateDispo);
         
@@ -821,6 +1124,42 @@
         
         const metierHTML = `<strong style="color: var(--primary); font-size: 1.05em;">${metierP}</strong>`;
         
+        // SECTION COORDONNÉES (mode direct ou formulaire)
+        let coordonneesHTML = '';
+        
+        if (modeContact === 'formulaire') {
+          coordonneesHTML = `
+            <div class="result-section">
+              <div class="section-title">📞 Contact</div>
+              <div class="info-item" style="background: #f0f9ff; padding: 12px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                <p style="margin: 0 0 12px; color: #333;">
+                  🔒 <strong>Coordonnées privées</strong><br>
+                  <span style="font-size: 13px; color: #666;">
+                    Ce professionnel souhaite être contacté uniquement via le formulaire de la plateforme.
+                  </span>
+                </p>
+                <button 
+                  class="btn-contact"
+                  onclick="ouvrirModalContact('${email}', '${nom}', '${prenom}', '${metierP}')"
+                >
+                  📧 Envoyer un message
+                </button>
+              </div>
+            </div>`;
+        } else {
+          coordonneesHTML = `
+            <div class="result-section">
+              <div class="section-title">📞 Coordonnées</div>
+              <div class="info-item">
+                <span>Email :</span> 
+                ${email !== 'Non renseigné' ? `<a href="mailto:${email}">${email}</a>` : email}
+              </div>
+              <div class="info-item">
+                <span>Téléphone :</span> ${tel}
+              </div>
+            </div>`;
+        }
+        
         html += `
           <div class="card">
             <div class="result-card">
@@ -829,19 +1168,10 @@
                   <div class="result-title">${prenom} ${nom}</div>
                   <div class="result-profession">${metierHTML}</div>
                 </div>
-                <div class="badge ${badgeInfo.class}">${badgeInfo.texte}</div>
+                ${badgeInfo ? `<div class="badge ${badgeInfo.class}">${badgeInfo.texte}</div>` : ''}
               </div>
 
-              <div class="result-section">
-                <div class="section-title">📞 Coordonnées</div>
-                <div class="info-item">
-                  <span>Email :</span> 
-                  ${email !== 'Non renseigné' ? `<a href="mailto:${email}">${email}</a>` : email}
-                </div>
-                <div class="info-item">
-                  <span>Téléphone :</span> ${tel}
-                </div>
-              </div>
+              ${coordonneesHTML}
               
               <div class="result-section">
                 <div class="section-title">👥 Pratique professionnelle</div>
@@ -874,11 +1204,168 @@
       }, 100);
     }
 
+    // ============= MODAL CONTACT =============
+    function ouvrirModalContact(email, nom, prenom, profession) {
+      currentProEmail = email;
+      document.getElementById('proNomModal').textContent = `${prenom} ${nom}`;
+      document.getElementById('proProfessionModal').textContent = profession;
+      document.getElementById('modalContact').classList.add('show');
+      
+      // Reset form
+      document.getElementById('contactNom').value = '';
+      document.getElementById('contactEmail').value = '';
+      document.getElementById('contactMessage').value = '';
+      document.getElementById('contactStatus').style.display = 'none';
+      document.getElementById('btnEnvoyerMessage').disabled = false;
+      updateCharCounter();
+    }
+
+    function fermerModalContact() {
+      document.getElementById('modalContact').classList.remove('show');
+      currentProEmail = null;
+    }
+
+    function updateCharCounter() {
+      const textarea = document.getElementById('contactMessage');
+      const counter = document.getElementById('charCounter');
+      const length = textarea.value.length;
+      
+      counter.textContent = `${length} / 500 caractères`;
+      
+      if (length > 450) {
+        counter.classList.add('warning');
+      } else {
+        counter.classList.remove('warning');
+      }
+      
+      if (length >= 500) {
+        counter.classList.add('error');
+      } else {
+        counter.classList.remove('error');
+      }
+    }
+
+    async function envoyerMessage() {
+      const nom = document.getElementById('contactNom').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const message = document.getElementById('contactMessage').value.trim();
+      const statusDiv = document.getElementById('contactStatus');
+      const btnEnvoyer = document.getElementById('btnEnvoyerMessage');
+      
+      // Validation
+      if (!nom || nom.length < 2) {
+        statusDiv.className = 'contact-status error';
+        statusDiv.textContent = '❌ Merci d\'indiquer votre nom (minimum 2 caractères)';
+        statusDiv.style.display = 'block';
+        return;
+      }
+      
+      if (!email || !email.includes('@')) {
+        statusDiv.className = 'contact-status error';
+        statusDiv.textContent = '❌ Email invalide';
+        statusDiv.style.display = 'block';
+        return;
+      }
+      
+      if (!message || message.length < 10) {
+        statusDiv.className = 'contact-status error';
+        statusDiv.textContent = '❌ Message trop court (minimum 10 caractères)';
+        statusDiv.style.display = 'block';
+        return;
+      }
+      
+      // Afficher loading
+      btnEnvoyer.disabled = true;
+      statusDiv.className = 'contact-status';
+      statusDiv.style.background = '#f0f9ff';
+      statusDiv.style.color = '#333';
+      statusDiv.textContent = '⏳ Envoi en cours...';
+      statusDiv.style.display = 'block';
+      
+      try {
+        const formData = new FormData();
+        formData.append('action', 'sendContactMessage');
+        formData.append('emailPro', currentProEmail);
+        formData.append('nomParticulier', nom);
+        formData.append('emailParticulier', email);
+        formData.append('message', message);
+        
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.ok) {
+          statusDiv.className = 'contact-status success';
+          statusDiv.innerHTML = `
+            <strong>✅ Message envoyé avec succès !</strong><br>
+            Le professionnel vous répondra directement par email s'il a une place disponible.
+          `;
+          
+          // Vider les champs
+          document.getElementById('contactNom').value = '';
+          document.getElementById('contactEmail').value = '';
+          document.getElementById('contactMessage').value = '';
+          updateCharCounter();
+          
+          // Fermer après 3 secondes
+          setTimeout(() => {
+            fermerModalContact();
+          }, 3000);
+          
+        } else {
+          statusDiv.className = 'contact-status error';
+          
+          if (result.error === 'COOLDOWN_ACTIVE') {
+            statusDiv.innerHTML = `
+              <strong>⏱️ Merci de patienter</strong><br>
+              ${result.message}
+            `;
+          } else if (result.error === 'SERVICE_UNAVAILABLE' || result.error === 'SERVICE_QUOTA_EXCEEDED') {
+            statusDiv.innerHTML = `
+              <strong>⚠️ Service temporairement indisponible</strong><br>
+              Merci de réessayer plus tard.
+            `;
+          } else {
+            statusDiv.textContent = '❌ ' + (result.message || result.error || 'Erreur inconnue');
+          }
+          
+          btnEnvoyer.disabled = false;
+        }
+        
+      } catch (error) {
+        console.error('Erreur envoi message:', error);
+        statusDiv.className = 'contact-status error';
+        statusDiv.textContent = '❌ Erreur réseau. Vérifiez votre connexion et réessayez.';
+        btnEnvoyer.disabled = false;
+      }
+    }
+
+    // ============= EVENT LISTENERS =============
     window.addEventListener('DOMContentLoaded', async () => {
       console.log('🚀 Initialisation...');
       await chargerDepartements();
       await chargerProfessionnels();
       console.log('✅ Prêt !');
+      
+      // Event listeners pour le formulaire
+      document.getElementById('departement').addEventListener('change', chargerCommunes);
+      document.getElementById('rechercheCommune').addEventListener('input', filtrerCommunes);
+      document.getElementById('btn-recherche').addEventListener('click', rechercher);
+      
+      // Event listeners pour le modal
+      document.querySelector('.modal-close').addEventListener('click', fermerModalContact);
+      document.getElementById('btnEnvoyerMessage').addEventListener('click', envoyerMessage);
+      document.getElementById('contactMessage').addEventListener('input', updateCharCounter);
+      
+      // Fermer modal si clic en dehors
+      document.getElementById('modalContact').addEventListener('click', function(e) {
+        if (e.target === this) {
+          fermerModalContact();
+        }
+      });
     });
   </script>
 </body>
