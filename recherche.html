@@ -692,6 +692,7 @@
       rayon: 'Rayon',
       disponibilite: 'Disponibilite',
       dateDisponibilite: 'DateDisponibilite',
+      placesDisponibles: 'PlacesDisponibles',
       modeContact: 'ModeContact'
     };
 
@@ -1096,6 +1097,7 @@
         const modeContact = p[COLONNES.modeContact] || 'direct';
         
         const badgeInfo = calculerBadgeDisponibilite(dispo, dateDispo);
+        const placesDisponibles = p[COLONNES.placesDisponibles] || '';
         
         const trancheRecherchee = p.publicsOriginal.find(pub => normaliser(pub).includes(tranche));
         const publicsHTML = trancheRecherchee 
@@ -1181,7 +1183,6 @@
                 <div class="info-item">
                   <span>Visio :</span> ${visio}
                 </div>
-                
                 ${placesDisponibles ? `
                 <div class="info-item" style="background: #f0f9ff; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #3b82f6;">
                 <span style="color: #1e40af; font-weight: 700;">✨ Disponibilités estimées :</span> 
