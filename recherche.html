@@ -965,19 +965,20 @@
       }
       
       matches.sort((a, b) => {
-        //  Tri par date de disponibilité (plus proche en premier)
         const dateA = new Date(a[COLONNES.dateDisponibilite] || '9999-12-31');
         const dateB = new Date(b[COLONNES.dateDisponibilite] || '9999-12-31');
         
         const diffDate = dateA - dateB;
         if (diffDate !== 0) return diffDate;
         
-        // Si même date, tri par distance
         if (a.distance === null && b.distance === null) return 0;
         if (a.distance === null) return 1;
         if (b.distance === null) return -1;
         return a.distance - b.distance;
       });
+      
+      // 🆕 TRACKING RECHERCHE
+      await logRecherche(departement, communePart, metier, tranche, matches.length);
       
       afficherResultats(matches, tranche);
     }
@@ -1275,6 +1276,23 @@
       }
     }
 
+    //FONCTION DE TRACKING DES RECHERCHES
+    async function logRecherche(dept, commune, metier, tranche, nbResultats) {
+      try {
+        const formData = new FormData();
+        formData.append('action', 'logRecherche');
+        formData.append('departement', dept);
+        formData.append('commune', commune);
+        formData.append('metier', metier);
+        formData.append('tranche', tranche);
+        formData.append('nbResultats', nbResultats);
+        
+        await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+      } catch(e) {
+        console.log('⚠️ Erreur log recherche:', e);
+      }
+    }
+    
     async function envoyerMessage() {
       const nom = document.getElementById('contactNom').value.trim();
       const email = document.getElementById('contactEmail').value.trim();
@@ -1344,11 +1362,19 @@
           setTimeout(() => {
             fermerModalContact();
           }, 3000);
-          
+        
         } else {
           statusDiv.className = 'contact-status error';
-          
-          if (result.error === 'COOLDOWN_ACTIVE') {
+          if (result.error === 'PROFESSIONAL_LIMIT_REACHED') {
+            statusDiv.innerHTML = `
+              <strong>⚠️ Professionnel très sollicité</strong><br>
+              ${result.message}<br>
+              <small style="color: #666; display: block; margin-top: 8px;">
+                Ce professionnel a ${result.details?.placesDisponibles || '?'} place(s) et peut recevoir 
+                ${result.details?.maxContacts || '?'} demandes par semaine maximum.
+              </small>
+            `;
+          } else if (result.error === 'COOLDOWN_ACTIVE') {
             statusDiv.innerHTML = `
               <strong>⏱️ Merci de patienter</strong><br>
               ${result.message}
