@@ -1,4 +1,5 @@
-<!doctype html>
+<div class="result-section">
+                <div class="section-title">👥 Pratique<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8"/>
@@ -1185,6 +1186,10 @@
                 <div class="info-item">
                   <span>Visio :</span> ${visio}
                 </div>
+                ${placesDisponibles ? `
+                <div class="info-item" style="font-size: 0.85rem; color: #6b7280; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb;">
+                  <span style="font-weight: 500;">✨ Disponibilité(s) estimée(s) :</span> ${placesDisponibles} place(s)
+                </div>` : ''}
               </div>
 
               <div class="result-section">
@@ -1198,19 +1203,9 @@
                 </div>
               </div>
 
-              <!-- Informations complémentaires (style discret) -->
-              <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #6b7280;">
-                  ${placesDisponibles ? `
-                  <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span>✨</span>
-                    <span><strong>${placesDisponibles} place(s)</strong> estimée(s)</span>
-                  </div>` : ''}
-                  <div style="display: flex; align-items: center; gap: 0.5rem;">
-                    <span>📅</span>
-                    <span>Mis à jour le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}</span>
-                  </div>
-                </div>
+              <!-- Informations complémentaires (en bas, style très discret) -->
+              <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid #e5e7eb; font-size: 0.8rem; color: #9ca3af;">
+                📅 Mis à jour le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}
               </div>
             </div>
           </div>`;
@@ -1388,5 +1383,4 @@
     });
   </script>
 </body>
-</html>
 </html>
