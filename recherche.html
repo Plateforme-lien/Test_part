@@ -965,6 +965,14 @@
       }
       
       matches.sort((a, b) => {
+        //  Tri par date de disponibilité (plus proche en premier)
+        const dateA = new Date(a[COLONNES.dateDisponibilite] || '9999-12-31');
+        const dateB = new Date(b[COLONNES.dateDisponibilite] || '9999-12-31');
+        
+        const diffDate = dateA - dateB;
+        if (diffDate !== 0) return diffDate;
+        
+        // Si même date, tri par distance
         if (a.distance === null && b.distance === null) return 0;
         if (a.distance === null) return 1;
         if (b.distance === null) return -1;
@@ -1079,7 +1087,8 @@
       }
       
       let html = `<div class="card"><div class="alert success">
-        <strong>✅ ${matches.length} professionnel(s) trouvé(s)</strong> (triés du plus proche au plus éloigné)
+      <strong>✅ ${matches.length} professionnel(s) trouvé(s)</strong><br>
+      <small>Triés par date de disponibilité (plus proche en premier), puis par distance</small>
       </div></div>`;
       
       matches.forEach((p) => {
