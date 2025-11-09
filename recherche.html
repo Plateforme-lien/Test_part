@@ -693,7 +693,8 @@
       disponibilite: 'Disponibilite',
       dateDisponibilite: 'DateDisponibilite',
       placesDisponibles: 'PlacesDisponibles',
-      modeContact: 'ModeContact'
+      modeContact: 'ModeContact',
+      updatedAt: 'UpdatedAt'
     };
 
     const API_DEPARTEMENTS = 'https://geo.api.gouv.fr/departements';
@@ -1095,6 +1096,7 @@
         const dateDispo = p[COLONNES.dateDisponibilite] || '';
         const visio = p[COLONNES.visio] || 'Non renseigné';
         const modeContact = p[COLONNES.modeContact] || 'direct';
+        const updatedAt = p[COLONNES.updatedAt] || '';
         
         const badgeInfo = calculerBadgeDisponibilite(dispo, dateDispo);
         const placesDisponibles = p[COLONNES.placesDisponibles] || '';
@@ -1183,16 +1185,23 @@
                 <div class="info-item">
                   <span>Visio :</span> ${visio}
                 </div>
+                <div class="info-item" style="background: #f9fafb; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #e5e7eb;">
+                  <span style="color: #6b7280; font-weight: 600;">📅 Informations mises à jour le :</span> 
+                  <strong>${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Date inconnue'}</strong>
+                  <div style="font-size: 13px; color: #6b7280; margin-top: 6px; font-style: italic;">
+                    ℹ️ Cette date indique la dernière mise à jour du profil par le professionnel.
+                  </div>
+                </div>
                 ${placesDisponibles ? `
                 <div class="info-item" style="background: #f0f9ff; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #3b82f6;">
-                <span style="color: #1e40af; font-weight: 700;">✨ Disponibilité(s) estimée(s) :</span> 
-                <strong style="color: #1e40af;">${placesDisponibles} place(s)</strong>
-                <div style="font-size: 13px; color: #6b7280; margin-top: 6px; font-style: italic;">
-                ℹ️ Cette information est déclarative et peut évoluer rapidement. 
-                Contactez le professionnel pour confirmer sa disponibilité actuelle.
-                </div>
+                  <span style="color: #1e40af; font-weight: 700;">✨ Disponibilité(s) estimée(s) :</span> 
+                  <strong style="color: #1e40af;">${placesDisponibles} place(s)</strong>
+                  <div style="font-size: 13px; color: #6b7280; margin-top: 6px; font-style: italic;">
+                    ℹ️ Cette information est déclarative et peut évoluer rapidement. 
+                    Contactez le professionnel pour confirmer sa disponibilité actuelle.
+                  </div>
                 </div>` : ''}
-                </div>
+              </div>
 
               <div class="result-section">
                 <div class="section-title">📍 Localisation & Intervention</div>
