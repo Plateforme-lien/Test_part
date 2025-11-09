@@ -1186,7 +1186,7 @@
                   <span>Visio :</span> ${visio}
                 </div>
                 ${placesDisponibles ? `
-                <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 0.8rem; color: #6b7280; text-align: right; font-style: italic;">
+                <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 1rem; color: #6b7280; text-align: right; font-style: italic;">
                 ${placesDisponibles} place(s) estimée(s)
                 </div>` : ''}
               </div>
@@ -1197,20 +1197,20 @@
                 ${distanceHTML}
                 <div class="info-item"><span>Département :</span> ${dept}</div>
                 <div class="info-item"><span>Commune :</span> ${commune}</div>
-                <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 0.8rem; color: #6b7280; text-align: right; font-style: italic;">
+                <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 1rem; color: #6b7280; text-align: right; font-style: italic;">
                     Distance approximative (±5 km)
                     </div>
               </div>
               
               <!-- Informations indicatives -->
-              <div style="margin-top: 1.2rem; padding: 0.8rem; background: #fafafa; border-radius: 6px; font-size: 0.8rem; color: #6b7280; line-height: 1.5;">
+              <div style="margin-top: 1.2rem; padding: 0.8rem; background: #fafafa; border-radius: 6px; font-size: 1rem; color: #6b7280; line-height: 1.5;">
               <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem;">
               <div style="display: flex; align-items: center; gap: 0.4rem;">
               <span>📅</span>
-              <span>Mis à jour le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}</span>
+              <span>Données mises à jour par le professionnel le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}</span>
               </div>
               </div>
-              <div style="font-style: italic; font-size: 0.75rem; color: #9ca3af;">
+              <div style="font-style: italic bold; text-align: justify; font-size: 1rem; color: #9ca3af;">
               ℹ️ Ces informations sont données à titre indicatif et peuvent évoluer rapidement. Contactez le professionnel pour confirmer.
               </div>
               </div>
