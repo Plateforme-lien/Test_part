@@ -1,4 +1,36 @@
-<div class="result-section">
+${coordonneesHTML}
+              
+              <div class="result-section">
+                <div class="section-title">👥 Pratique professionnelle</div>
+                <div class="info-item">
+                  <span>Public concerné par votre recherche :</span> ${publicsHTML}
+                </div>
+                <div class="info-item">
+                  <span>Visio :</span> ${visio}
+                </div>
+                ${placesDisponibles ? `
+                <div class="info-item" style="background: #f0f9ff; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #3b82f6;">
+                <span style="color: #1e40af; font-weight: 700;">✨ Disponibilité(s) estimée(s) :</span> 
+                <strong style="color: #1e40af;">${placesDisponibles} place(s)</strong>
+                <div style="font-size: 13px; color: #6b7280; margin-top: 6px; font-style: italic;">
+                ℹ️ Cette information est déclarative et peut évoluer rapidement. 
+                Contactez le professionnel pour confirmer sa disponibilité actuelle.
+                </div>
+                </div>` : ''}
+              </div>
+
+              <div class="result-section">
+                <div class="section-title">📍 Localisation & Intervention</div>
+                ${interventionInfo}
+                ${distanceHTML}
+                <div class="info-item"><span>Département :</span> ${dept}</div>
+                <div class="info-item"><span>Commune :</span> ${commune}</div>
+                <div class="info-item" style="font-style:italic; font-size:0.9rem; color:#666; margin-top:0.5rem;">
+                  ℹ️ Les calculs de distance sont approximatifs (±5 km).
+                </div>
+              </div>
+              
+              <div style="margin-top: 1rem              <div class="result-section">
                 <div class="section-title">👥 Pratique<!doctype html>
 <html lang="fr">
 <head>
@@ -677,7 +709,7 @@
     // ============= CONFIGURATION =============
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
     const CACHE_KEY = 'tsa_data';
-    const CACHE_DURATION = 60 * 60 * 1000;
+    const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
     const COLONNES = {
       email: 'Email',
@@ -1195,7 +1227,7 @@
                 Contactez le professionnel pour confirmer sa disponibilité actuelle.
                 </div>
                 </div>` : ''}
-                </div>
+              </div>
 
               <div class="result-section">
                 <div class="section-title">📍 Localisation & Intervention</div>
@@ -1207,15 +1239,14 @@
                   ℹ️ Les calculs de distance sont approximatifs (±5 km).
                 </div>
               </div>
-
-              <!-- Informations indicatives regroupées en bas -->
+              
               <div style="margin-top: 1rem; padding: 0.75rem; background: #fafafa; border-radius: 6px; font-size: 0.8rem; color: #6b7280; line-height: 1.6;">
-                <div style="font-weight: 600; margin-bottom: 0.3rem;">ℹ️ informations à titre indicatif</div>
+                <div style="font-weight: 600; margin-bottom: 0.3rem;">ℹ️ Informations à titre indicatif</div>
                 ${placesDisponibles ? `<div>✨ ${placesDisponibles} place(s) estimée(s)</div>` : ''}
-                <div>📏 distance approximative (±5 km)</div>
-                <div>📅 mis à jour le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}</div>
+                <div>📏 Distance approximative (±5 km)</div>
+                <div>📅 Mis à jour le ${updatedAt ? new Date(updatedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }) : 'date inconnue'}</div>
                 <div style="margin-top: 0.4rem; font-style: italic; color: #9ca3af; font-size: 0.75rem;">
-                  ces informations peuvent évoluer rapidement, contactez le professionnel pour confirmer
+                  Ces informations peuvent évoluer rapidement, contactez le professionnel pour confirmer.
                 </div>
               </div>
             </div>
