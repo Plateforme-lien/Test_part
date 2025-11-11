@@ -1136,13 +1136,15 @@
       const div = document.getElementById('resultats');
       
       if (matches.length === 0) {
-        div.innerHTML = `
-          <div class="card">
-            <div class="no-results">
-              <h3>😔 Aucun professionnel trouvé</h3>
-              <p>Essayez d'élargir vos critères de recherche.</p>
-            </div>
-          </div>`;
+  div.innerHTML = `
+    <div class="card">
+      <div class="no-results">
+        <h3>Aucun professionnel ne correspond actuellement à votre recherche dans ce secteur.</h3>
+        <p style="margin-top: 1rem; font-size: 0.95rem; color: #666;">
+          N'hésitez pas à revenir consulter la plateforme prochainement.
+        </p>
+      </div>
+    </div>`;
         div.scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
@@ -1188,32 +1190,10 @@
               <span>🏢 Cabinet uniquement :</span> <strong style="color: #e65100;">Vous devez vous déplacer à ${commune}</strong>
             </div>`;
         }
-        
-        // Déterminer si c'est un DOM-TOM
-const codeDept = (dept || '').split('-')[0].trim();
-const isDOMTOM = ['971', '972', '973', '974', '976'].includes(codeDept);
+      const distanceHTML = (modeIntervention === 'cabinet' && p.distance !== null) ? `
+  <div class="info-item"><span>📏 Distance estimée :</span> ${Math.round(p.distance)} km</div>
+` : '';
 
-// Générer le message de distance approprié
-let distanceHTML = '';
-if (p.distance !== null) {
-  let messageDistance = '';
-  
-  if (modeIntervention === 'cabinet') {
-    messageDistance = `La distance approximative entre votre commune et le cabinet est d'environ <strong>${Math.round(p.distance)} km</strong> (±5 km).`;
-  } else if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
-    if (isDOMTOM) {
-      messageDistance = `Distance approximative à vol d'oiseau : <strong>${Math.round(p.distance)} km</strong>. Contactez le professionnel pour confirmer.`;
-    } else {
-      messageDistance = `Distance estimée par la route : <strong>${Math.round(p.distance)} km</strong>. Peut varier selon votre adresse exacte, contactez le professionnel pour confirmer.`;
-    }
-  }
-  
-  distanceHTML = `
-    <div class="info-item" style="background: #f0f9ff; padding: 0.75rem; border-radius: 6px; border-left: 4px solid #3b82f6;">
-      <span>📏 Distance :</span><br>
-      <span style="font-size: 0.95em; color: #333;">${messageDistance}</span>
-    </div>`;
-}
         
         const metierHTML = `<strong style="color: var(--primary); font-size: 1.05em;">${metierP}</strong>`;
         
@@ -1285,6 +1265,25 @@ if (p.distance !== null) {
   ${distanceHTML}
   <div class="info-item"><span>Département :</span> ${dept}</div>
   <div class="info-item"><span>Commune :</span> ${commune}</div>
+  ${(() => {
+    const codeDept = (dept || '').split('-')[0].trim();
+    const isDOMTOM = ['971', '972', '973', '974', '976'].includes(codeDept);
+    
+    let messageInfo = '';
+    if (modeIntervention === 'cabinet') {
+      messageInfo = 'Distance approximative entre votre commune et le cabinet (±5 km)';
+    } else if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
+      if (isDOMTOM) {
+        messageInfo = 'Le secteur d\'intervention est estimé de façon approximative. <br>Contactez le professionnel pour vérifier qu\'il peut se déplace chez vous'
+      } else {
+        messageInfo = 'Le secteur d\'intervention est estimé de façon approximative. <br>Contactez le professionnel pour vérifier qu\'il peut se déplace chez vous';
+      }
+    } 
+    
+    return `<div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 1rem; color: #6b7280; text-align: right; font-style: italic;">
+      ℹ️ ${messageInfo}
+    </div>`;
+  })()}
 </div>
               
               <div style="margin-top: 1.2rem; padding: 0.8rem; background: #fafafa; border-radius: 6px; font-size: 1rem; color: #6b7280; line-height: 1.5;">
