@@ -1189,9 +1189,31 @@
             </div>`;
         }
         
-        const distanceHTML = p.distance !== null ? `
-          <div class="info-item"><span>📏 Distance estimée :</span> ${Math.round(p.distance)} km</div>
-        ` : '';
+        // Déterminer si c'est un DOM-TOM
+const codeDept = (dept || '').split('-')[0].trim();
+const isDOMTOM = ['971', '972', '973', '974', '976'].includes(codeDept);
+
+// Générer le message de distance approprié
+let distanceHTML = '';
+if (p.distance !== null) {
+  let messageDistance = '';
+  
+  if (modeIntervention === 'cabinet') {
+    messageDistance = `La distance approximative entre votre commune et le cabinet est d'environ <strong>${Math.round(p.distance)} km</strong> (±5 km).`;
+  } else if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
+    if (isDOMTOM) {
+      messageDistance = `Distance approximative à vol d'oiseau : <strong>${Math.round(p.distance)} km</strong>. Contactez le professionnel pour confirmer.`;
+    } else {
+      messageDistance = `Distance estimée par la route : <strong>${Math.round(p.distance)} km</strong>. Peut varier selon votre adresse exacte, contactez le professionnel pour confirmer.`;
+    }
+  }
+  
+  distanceHTML = `
+    <div class="info-item" style="background: #f0f9ff; padding: 0.75rem; border-radius: 6px; border-left: 4px solid #3b82f6;">
+      <span>📏 Distance :</span><br>
+      <span style="font-size: 0.95em; color: #333;">${messageDistance}</span>
+    </div>`;
+}
         
         const metierHTML = `<strong style="color: var(--primary); font-size: 1.05em;">${metierP}</strong>`;
         
@@ -1257,16 +1279,13 @@
                 </div>` : ''}
               </div>
 
-              <div class="result-section">
-                <div class="section-title">📍 Localisation & Intervention</div>
-                ${interventionInfo}
-                ${distanceHTML}
-                <div class="info-item"><span>Département :</span> ${dept}</div>
-                <div class="info-item"><span>Commune :</span> ${commune}</div>
-                <div style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed #e5e7eb; font-size: 1rem; color: #6b7280; text-align: right; font-style: italic;">
-                    ℹ️ Distance approximative (±5 km)
-                    </div>
-              </div>
+<div class="result-section">
+  <div class="section-title">📍 Localisation & Intervention</div>
+  ${interventionInfo}
+  ${distanceHTML}
+  <div class="info-item"><span>Département :</span> ${dept}</div>
+  <div class="info-item"><span>Commune :</span> ${commune}</div>
+</div>
               
               <div style="margin-top: 1.2rem; padding: 0.8rem; background: #fafafa; border-radius: 6px; font-size: 1rem; color: #6b7280; line-height: 1.5;">
               <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem;">
