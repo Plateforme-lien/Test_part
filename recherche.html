@@ -988,7 +988,11 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
   const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
   const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
   const communeProNom = professionnel[COLONNES.commune] || "";
-  const communesCouvertesRaw = professionnel.CommunesCouvertes || "";
+async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
+  const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
+  const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
+  const communeProNom = professionnel[COLONNES.commune] || "";
+  const communesCouvertesRaw = professionnel[COLONNES.communesCouvertes] || "";  // ← CORRIGÉ ICI
   
   const codeDeptPro = deptProRaw.split('-')[0].trim();
   
@@ -996,7 +1000,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
   if (modeIntervention === 'cabinet') {
     if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
     
-    // Récupérer les coordonnées du cabinet
     let coordsPro = null;
     
     if (cacheCommunesParDept[codeDeptPro]) {
@@ -1029,26 +1032,22 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
     
     if (!coordsPro) return { ok: false, distance: null };
     
-    // Calculer la distance
     const dist = distanceKm(
       coordsParticulier.lat, coordsParticulier.lon,
       coordsPro.lat, coordsPro.lon
     );
     
-    // Pour un cabinet, on accepte jusqu'à 25 km
     return { ok: dist <= 25, distance: dist };
   }
   
   // CAS 2 : DÉPLACEMENT ou MIXTE
   if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
     
-    // Vérifier si la commune du particulier est dans la liste des communes couvertes
     if (communesCouvertesRaw) {
       const communesCouvertes = communesCouvertesRaw.split('|').map(c => normaliser(c.trim()));
       const communePartNormalisee = normaliser(communeParticulier);
       
       if (communesCouvertes.includes(communePartNormalisee)) {
-        // Calculer la distance pour le tri (optionnel)
         let dist = null;
         if (coordsParticulier && communeProNom) {
           let coordsPro = null;
@@ -1075,11 +1074,9 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
       }
     }
     
-    // Si pas dans la liste (fallback ou données manquantes)
     return { ok: false, distance: null };
   }
   
-  // CAS 3 : Mode inconnu
   return { ok: false, distance: null };
 }
 
