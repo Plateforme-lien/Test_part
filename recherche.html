@@ -1082,55 +1082,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
   // CAS 3 : Mode inconnu
   return { ok: false, distance: null };
 }
-      
-      if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
-      
-      let coordsPro = null;
-      
-      if (cacheCommunesParDept[codeDeptPro]) {
-        const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
-        if (communePro && communePro.centre) {
-          coordsPro = {
-            lon: communePro.centre.coordinates[0],
-            lat: communePro.centre.coordinates[1]
-          };
-        }
-      }
-      
-      if (!coordsPro && codeDeptPro) {
-        try {
-          const response = await fetch(API_COMMUNES(codeDeptPro));
-          const communes = await response.json();
-          cacheCommunesParDept[codeDeptPro] = communes;
-          
-          const communePro = communes.find(c => normaliser(c.nom) === normaliser(communeProNom));
-          if (communePro && communePro.centre) {
-            coordsPro = {
-              lon: communePro.centre.coordinates[0],
-              lat: communePro.centre.coordinates[1]
-            };
-          }
-        } catch (error) {
-          return { ok: false, distance: null };
-        }
-      }
-      
-      if (!coordsPro) return { ok: false, distance: null };
-      
-      const dist = distanceKm(
-        coordsParticulier.lat, coordsParticulier.lon,
-        coordsPro.lat, coordsPro.lon
-      );
-      
-      if (rayonTexte === "Aucun - en cabinet") {
-        return { ok: dist <= 25, distance: dist };
-      }
-      
-      let rayonPro = parseFloat(rayonTexte.replace(/[^\d.]/g, ""));
-      if (Number.isNaN(rayonPro)) rayonPro = 0;
-      
-      return { ok: dist <= rayonPro, distance: dist };
-    }
 
     function calculerBadgeDisponibilite(disponibilite, dateDispo) {
       const dispoLower = normaliser(disponibilite);
