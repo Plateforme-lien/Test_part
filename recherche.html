@@ -678,24 +678,25 @@
     const CACHE_KEY = 'tsa_data';
     const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
-    const COLONNES = {
-      email: 'Email',
-      nom: 'Nom',
-      prenom: 'Prenom',
-      telephone: 'Telephone',
-      profession: 'Profession',
-      publics: 'Publics',
-      modes: 'Modes',
-      visio: 'Visio',
-      departement: 'Departement',
-      commune: 'Commune',
-      rayon: 'Rayon',
-      disponibilite: 'Disponibilite',
-      dateDisponibilite: 'DateDisponibilite',
-      placesDisponibles: 'PlacesDisponibles',
-      modeContact: 'ModeContact',
-      updatedAt: 'UpdatedAt'
-    };
+const COLONNES = {
+  email: 'Email',
+  nom: 'Nom',
+  prenom: 'Prenom',
+  telephone: 'Telephone',
+  profession: 'Profession',
+  publics: 'Publics',
+  modeIntervention: 'ModeIntervention',  
+  visio: 'Visio',
+  departement: 'Departement',
+  commune: 'Commune',
+  rayon: 'Rayon',
+  disponibilite: 'Disponibilite',
+  dateDisponibilite: 'DateDisponibilite',
+  placesDisponibles: 'PlacesDisponibles',
+  modeContact: 'ModeContact',
+  updatedAt: 'UpdatedAt',
+  communesCouvertes: 'CommunesCouvertes'  
+};
 
     const API_DEPARTEMENTS = 'https://geo.api.gouv.fr/departements';
     const API_COMMUNES = (codeDept) => `https://geo.api.gouv.fr/departements/${codeDept}/communes?fields=nom,code,centre&format=json&geometry=centre`;
@@ -983,17 +984,104 @@
       afficherResultats(matches, tranche);
     }
 
-    async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
-      const rayonTexte = (professionnel[COLONNES.rayon] || "Aucun - en cabinet").trim();
-      const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
-      const communeProNom = professionnel[COLONNES.commune] || "";
-      
-      const codeDeptPro = deptProRaw.split('-')[0].trim();
-      
-      if (rayonTexte === "Tout mon département") {
-        const ok = normaliser(codeDeptPro) === normaliser(deptParticulier);
-        return { ok, distance: ok ? 0 : null };
+async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
+  const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
+  const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
+  const communeProNom = professionnel[COLONNES.commune] || "";
+  const communesCouvertesRaw = professionnel.CommunesCouvertes || "";
+  
+  const codeDeptPro = deptProRaw.split('-')[0].trim();
+  
+  // CAS 1 : CABINET UNIQUEMENT
+  if (modeIntervention === 'cabinet') {
+    if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
+    
+    // Récupérer les coordonnées du cabinet
+    let coordsPro = null;
+    
+    if (cacheCommunesParDept[codeDeptPro]) {
+      const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+      if (communePro && communePro.centre) {
+        coordsPro = {
+          lon: communePro.centre.coordinates[0],
+          lat: communePro.centre.coordinates[1]
+        };
       }
+    }
+    
+    if (!coordsPro && codeDeptPro) {
+      try {
+        const response = await fetch(API_COMMUNES(codeDeptPro));
+        const communes = await response.json();
+        cacheCommunesParDept[codeDeptPro] = communes;
+        
+        const communePro = communes.find(c => normaliser(c.nom) === normaliser(communeProNom));
+        if (communePro && communePro.centre) {
+          coordsPro = {
+            lon: communePro.centre.coordinates[0],
+            lat: communePro.centre.coordinates[1]
+          };
+        }
+      } catch (error) {
+        return { ok: false, distance: null };
+      }
+    }
+    
+    if (!coordsPro) return { ok: false, distance: null };
+    
+    // Calculer la distance
+    const dist = distanceKm(
+      coordsParticulier.lat, coordsParticulier.lon,
+      coordsPro.lat, coordsPro.lon
+    );
+    
+    // Pour un cabinet, on accepte jusqu'à 25 km
+    return { ok: dist <= 25, distance: dist };
+  }
+  
+  // CAS 2 : DÉPLACEMENT ou MIXTE
+  if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
+    
+    // Vérifier si la commune du particulier est dans la liste des communes couvertes
+    if (communesCouvertesRaw) {
+      const communesCouvertes = communesCouvertesRaw.split('|').map(c => normaliser(c.trim()));
+      const communePartNormalisee = normaliser(communeParticulier);
+      
+      if (communesCouvertes.includes(communePartNormalisee)) {
+        // Calculer la distance pour le tri (optionnel)
+        let dist = null;
+        if (coordsParticulier && communeProNom) {
+          let coordsPro = null;
+          
+          if (cacheCommunesParDept[codeDeptPro]) {
+            const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+            if (communePro && communePro.centre) {
+              coordsPro = {
+                lon: communePro.centre.coordinates[0],
+                lat: communePro.centre.coordinates[1]
+              };
+            }
+          }
+          
+          if (coordsPro) {
+            dist = distanceKm(
+              coordsParticulier.lat, coordsParticulier.lon,
+              coordsPro.lat, coordsPro.lon
+            );
+          }
+        }
+        
+        return { ok: true, distance: dist };
+      }
+    }
+    
+    // Si pas dans la liste (fallback ou données manquantes)
+    return { ok: false, distance: null };
+  }
+  
+  // CAS 3 : Mode inconnu
+  return { ok: false, distance: null };
+}
       
       if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
       
