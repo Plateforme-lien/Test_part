@@ -988,10 +988,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
   const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
   const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
   const communeProNom = professionnel[COLONNES.commune] || "";
-async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
-  const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
-  const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
-  const communeProNom = professionnel[COLONNES.commune] || "";
   const communesCouvertesRaw = professionnel[COLONNES.communesCouvertes] || "";  // ← CORRIGÉ ICI
   
   const codeDeptPro = deptProRaw.split('-')[0].trim();
