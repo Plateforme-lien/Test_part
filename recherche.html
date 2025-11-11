@@ -672,31 +672,31 @@
   </div>
 
   <!-- ==================== JAVASCRIPT ==================== -->
-  <script>
+<script>
     // ============= CONFIGURATION =============
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
     const CACHE_KEY = 'tsa_data';
     const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
-const COLONNES = {
-  email: 'Email',
-  nom: 'Nom',
-  prenom: 'Prenom',
-  telephone: 'Telephone',
-  profession: 'Profession',
-  publics: 'Publics',
-  modeIntervention: 'ModeIntervention',  
-  visio: 'Visio',
-  departement: 'Departement',
-  commune: 'Commune',
-  rayon: 'Rayon',
-  disponibilite: 'Disponibilite',
-  dateDisponibilite: 'DateDisponibilite',
-  placesDisponibles: 'PlacesDisponibles',
-  modeContact: 'ModeContact',
-  updatedAt: 'UpdatedAt',
-  communesCouvertes: 'CommunesCouvertes'  
-};
+    const COLONNES = {
+      email: 'Email',
+      nom: 'Nom',
+      prenom: 'Prenom',
+      telephone: 'Telephone',
+      profession: 'Profession',
+      publics: 'Publics',
+      modeIntervention: 'ModeIntervention',  
+      visio: 'Visio',
+      departement: 'Departement',
+      commune: 'Commune',
+      rayon: 'Rayon',
+      disponibilite: 'Disponibilite',
+      dateDisponibilite: 'DateDisponibilite',
+      placesDisponibles: 'PlacesDisponibles',
+      modeContact: 'ModeContact',
+      updatedAt: 'UpdatedAt',
+      communesCouvertes: 'CommunesCouvertes'  
+    };
 
     const API_DEPARTEMENTS = 'https://geo.api.gouv.fr/departements';
     const API_COMMUNES = (codeDept) => `https://geo.api.gouv.fr/departements/${codeDept}/communes?fields=nom,code,centre&format=json&geometry=centre`;
@@ -978,103 +978,100 @@ const COLONNES = {
         return a.distance - b.distance;
       });
       
-      // 🆕 TRACKING RECHERCHE
       await logRecherche(departement, communePart, metier, tranche, matches.length);
       
       afficherResultats(matches, tranche);
     }
 
-async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
-  const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
-  const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
-  const communeProNom = professionnel[COLONNES.commune] || "";
-  const communesCouvertesRaw = professionnel[COLONNES.communesCouvertes] || "";  // ← CORRIGÉ ICI
-  
-  const codeDeptPro = deptProRaw.split('-')[0].trim();
-  
-  // CAS 1 : CABINET UNIQUEMENT
-  if (modeIntervention === 'cabinet') {
-    if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
-    
-    let coordsPro = null;
-    
-    if (cacheCommunesParDept[codeDeptPro]) {
-      const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
-      if (communePro && communePro.centre) {
-        coordsPro = {
-          lon: communePro.centre.coordinates[0],
-          lat: communePro.centre.coordinates[1]
-        };
-      }
-    }
-    
-    if (!coordsPro && codeDeptPro) {
-      try {
-        const response = await fetch(API_COMMUNES(codeDeptPro));
-        const communes = await response.json();
-        cacheCommunesParDept[codeDeptPro] = communes;
-        
-        const communePro = communes.find(c => normaliser(c.nom) === normaliser(communeProNom));
-        if (communePro && communePro.centre) {
-          coordsPro = {
-            lon: communePro.centre.coordinates[0],
-            lat: communePro.centre.coordinates[1]
-          };
-        }
-      } catch (error) {
-        return { ok: false, distance: null };
-      }
-    }
-    
-    if (!coordsPro) return { ok: false, distance: null };
-    
-    const dist = distanceKm(
-      coordsParticulier.lat, coordsParticulier.lon,
-      coordsPro.lat, coordsPro.lon
-    );
-    
-    return { ok: dist <= 25, distance: dist };
-  }
-  
-  // CAS 2 : DÉPLACEMENT ou MIXTE
-  if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
-    
-    if (communesCouvertesRaw) {
-      const communesCouvertes = communesCouvertesRaw.split('|').map(c => normaliser(c.trim()));
-      const communePartNormalisee = normaliser(communeParticulier);
+    async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
+      const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
+      const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
+      const communeProNom = professionnel[COLONNES.commune] || "";
+      const communesCouvertesRaw = professionnel[COLONNES.communesCouvertes] || "";
       
-      if (communesCouvertes.includes(communePartNormalisee)) {
-        let dist = null;
-        if (coordsParticulier && communeProNom) {
-          let coordsPro = null;
-          
-          if (cacheCommunesParDept[codeDeptPro]) {
-            const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+      const codeDeptPro = deptProRaw.split('-')[0].trim();
+      
+      if (modeIntervention === 'cabinet') {
+        if (!coordsParticulier || !communeProNom) return { ok: false, distance: null };
+        
+        let coordsPro = null;
+        
+        if (cacheCommunesParDept[codeDeptPro]) {
+          const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+          if (communePro && communePro.centre) {
+            coordsPro = {
+              lon: communePro.centre.coordinates[0],
+              lat: communePro.centre.coordinates[1]
+            };
+          }
+        }
+        
+        if (!coordsPro && codeDeptPro) {
+          try {
+            const response = await fetch(API_COMMUNES(codeDeptPro));
+            const communes = await response.json();
+            cacheCommunesParDept[codeDeptPro] = communes;
+            
+            const communePro = communes.find(c => normaliser(c.nom) === normaliser(communeProNom));
             if (communePro && communePro.centre) {
               coordsPro = {
                 lon: communePro.centre.coordinates[0],
                 lat: communePro.centre.coordinates[1]
               };
             }
-          }
-          
-          if (coordsPro) {
-            dist = distanceKm(
-              coordsParticulier.lat, coordsParticulier.lon,
-              coordsPro.lat, coordsPro.lon
-            );
+          } catch (error) {
+            return { ok: false, distance: null };
           }
         }
         
-        return { ok: true, distance: dist };
+        if (!coordsPro) return { ok: false, distance: null };
+        
+        const dist = distanceKm(
+          coordsParticulier.lat, coordsParticulier.lon,
+          coordsPro.lat, coordsPro.lon
+        );
+        
+        return { ok: dist <= 25, distance: dist };
       }
+      
+      if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
+        
+        if (communesCouvertesRaw) {
+          const communesCouvertes = communesCouvertesRaw.split('|').map(c => normaliser(c.trim()));
+          const communePartNormalisee = normaliser(communeParticulier);
+          
+          if (communesCouvertes.includes(communePartNormalisee)) {
+            let dist = null;
+            if (coordsParticulier && communeProNom) {
+              let coordsPro = null;
+              
+              if (cacheCommunesParDept[codeDeptPro]) {
+                const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
+                if (communePro && communePro.centre) {
+                  coordsPro = {
+                    lon: communePro.centre.coordinates[0],
+                    lat: communePro.centre.coordinates[1]
+                  };
+                }
+              }
+              
+              if (coordsPro) {
+                dist = distanceKm(
+                  coordsParticulier.lat, coordsParticulier.lon,
+                  coordsPro.lat, coordsPro.lon
+                );
+              }
+            }
+            
+            return { ok: true, distance: dist };
+          }
+        }
+        
+        return { ok: false, distance: null };
+      }
+      
+      return { ok: false, distance: null };
     }
-    
-    return { ok: false, distance: null };
-  }
-  
-  return { ok: false, distance: null };
-}
 
     function calculerBadgeDisponibilite(disponibilite, dateDispo) {
       const dispoLower = normaliser(disponibilite);
@@ -1133,7 +1130,7 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
         const publics = p.publicsOriginal.join(', ') || 'Non renseigné';
         const dept = p[COLONNES.departement] || 'Non renseigné';
         const commune = p[COLONNES.commune] || 'Non renseignée';
-        const rayon = p[COLONNES.rayon] || 'Non renseigné';
+        const modeIntervention = p[COLONNES.modeIntervention] || '';
         const dispo = p[COLONNES.disponibilite] || 'Non renseigné';
         const dateDispo = p[COLONNES.dateDisponibilite] || '';
         const visio = p[COLONNES.visio] || 'Non renseigné';
@@ -1148,11 +1145,8 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
           ? `<strong style="color: var(--primary); font-size: 1.05em;">✓ ${trancheRecherchee}</strong>`
           : publics;
         
-        const rayonLower = normaliser(rayon);
-        const seDeplace = !rayonLower.includes('cabinet');
-        
         let interventionInfo = '';
-        if (seDeplace) {
+        if (modeIntervention === 'deplacement' || modeIntervention === 'mixte') {
           interventionInfo = `
             <div class="info-item" style="background: #e8f5e9; padding: 0.75rem; border-radius: 6px; border-left: 4px solid #4caf50;">
               <span>🚗 Se déplace :</span> <strong style="color: #2e7d32;">Oui</strong>
@@ -1170,7 +1164,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
         
         const metierHTML = `<strong style="color: var(--primary); font-size: 1.05em;">${metierP}</strong>`;
         
-        // SECTION COORDONNÉES (mode direct ou formulaire)
         let coordonneesHTML = '';
         
         if (modeContact === 'formulaire') {
@@ -1244,7 +1237,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
                     </div>
               </div>
               
-              <!-- Informations indicatives -->
               <div style="margin-top: 1.2rem; padding: 0.8rem; background: #fafafa; border-radius: 6px; font-size: 1rem; color: #6b7280; line-height: 1.5;">
               <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.5rem;">
               <div style="display: flex; align-items: center; gap: 0.4rem">
@@ -1257,7 +1249,8 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
               <br> Contactez le professionnel pour confirmer.
               </div>
               </div>
-              </div>`;
+              </div>
+          </div>`;
       });
       
       div.innerHTML = html;
@@ -1267,14 +1260,12 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
       }, 100);
     }
 
-    // ============= MODAL CONTACT =============
     function ouvrirModalContact(email, nom, prenom, profession) {
       currentProEmail = email;
       document.getElementById('proNomModal').textContent = `${prenom} ${nom}`;
       document.getElementById('proProfessionModal').textContent = profession;
       document.getElementById('modalContact').classList.add('show');
       
-      // Reset form
       document.getElementById('contactNom').value = '';
       document.getElementById('contactEmail').value = '';
       document.getElementById('contactMessage').value = '';
@@ -1308,7 +1299,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
       }
     }
 
-    //FONCTION DE TRACKING DES RECHERCHES
     async function logRecherche(dept, commune, metier, tranche, nbResultats) {
       try {
         const formData = new FormData();
@@ -1332,7 +1322,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
       const statusDiv = document.getElementById('contactStatus');
       const btnEnvoyer = document.getElementById('btnEnvoyerMessage');
       
-      // Validation
       if (!nom || nom.length < 2) {
         statusDiv.className = 'contact-status error';
         statusDiv.textContent = '❌ Merci d\'indiquer votre nom (minimum 2 caractères)';
@@ -1354,7 +1343,6 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
         return;
       }
       
-      // Afficher loading
       btnEnvoyer.disabled = true;
       statusDiv.className = 'contact-status';
       statusDiv.style.background = '#f0f9ff';
@@ -1384,13 +1372,11 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
             Le professionnel vous répondra directement par email s'il a une place disponible.
           `;
           
-          // Vider les champs
           document.getElementById('contactNom').value = '';
           document.getElementById('contactEmail').value = '';
           document.getElementById('contactMessage').value = '';
           updateCharCounter();
           
-          // Fermer après 3 secondes
           setTimeout(() => {
             fermerModalContact();
           }, 3000);
@@ -1431,24 +1417,20 @@ async function verifierGeographie(professionnel, deptParticulier, communeParticu
       }
     }
 
-    // ============= EVENT LISTENERS =============
     window.addEventListener('DOMContentLoaded', async () => {
       console.log('🚀 Initialisation...');
       await chargerDepartements();
       await chargerProfessionnels();
       console.log('✅ Prêt !');
       
-      // Event listeners pour le formulaire
       document.getElementById('departement').addEventListener('change', chargerCommunes);
       document.getElementById('rechercheCommune').addEventListener('input', filtrerCommunes);
       document.getElementById('btn-recherche').addEventListener('click', rechercher);
       
-      // Event listeners pour le modal
       document.querySelector('.modal-close').addEventListener('click', fermerModalContact);
       document.getElementById('btnEnvoyerMessage').addEventListener('click', envoyerMessage);
       document.getElementById('contactMessage').addEventListener('input', updateCharCounter);
       
-      // Fermer modal si clic en dehors
       document.getElementById('modalContact').addEventListener('click', function(e) {
         if (e.target === this) {
           fermerModalContact();
