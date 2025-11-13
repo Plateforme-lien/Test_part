@@ -14,119 +14,32 @@
     --section-bg:#f9fafb;
   }
 
-  body{
-    font-family:Inter,Arial,Helvetica,sans-serif;
-    background:var(--bg);
-    margin:0;
-    padding:24px;
-    line-height:1.6;
-  }
-
+  body{font-family:Inter,Arial,Helvetica,sans-serif;background:var(--bg);margin:0;padding:24px;line-height:1.6;}
   .wrap{max-width:980px;margin:18px auto}
-  .card{
-    background:var(--card);
-    border-radius:16px;
-    padding:32px 36px;
-    box-shadow:0 8px 30px rgba(2,6,23,0.06);
-    margin-bottom:24px;
-  }
+  .card{background:var(--card);border-radius:16px;padding:32px 36px;box-shadow:0 8px 30px rgba(2,6,23,0.06);margin-bottom:24px;}
 
-  .nav-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:32px;
-    padding-bottom:16px;
-    border-bottom:2px solid #e6eef6;
-  }
-  .nav-header h1{
-    margin:0;
-    font-size:22px;
-    color:#0f1724;
-  }
-  .nav-links{
-    display:flex;
-    gap:16px;
-    align-items:center;
-  }
-  .nav-links a{
-    color:var(--muted);
-    text-decoration:none;
-    font-size:14px;
-    font-weight:600;
-    transition:color 0.2s;
-  }
+  .nav-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:16px;border-bottom:2px solid #e6eef6;}
+  .nav-header h1{margin:0;font-size:22px;color:#0f1724;}
+  .nav-links{display:flex;gap:16px;align-items:center;}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;transition:color 0.2s;}
   .nav-links a:hover{color:var(--primary);}
 
-  .loading-state{
-    text-align:center;
-    padding:2rem;
-    background:#fff3cd;
-    border-radius:12px;
-    border:2px solid #ffc107;
-  }
+  .loading-state{text-align:center;padding:2rem;background:#fff3cd;border-radius:12px;border:2px solid #ffc107;}
+  .loading-spinner{display:inline-block;width:40px;height:40px;border:4px solid rgba(14,165,164,0.2);border-radius:50%;border-top-color:var(--primary);animation:spin 1s linear infinite;margin-bottom:1rem;}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-  .loading-spinner{
-    display:inline-block;
-    width:40px;
-    height:40px;
-    border:4px solid rgba(14,165,164,0.2);
-    border-radius:50%;
-    border-top-color:var(--primary);
-    animation:spin 1s linear infinite;
-    margin-bottom:1rem;
-  }
+  .stats-table{overflow-x:auto;margin-top:1rem;}
+  table{width:100%;border-collapse:collapse;font-size:0.95rem;}
+  th{background:var(--primary);color:white;padding:1rem;text-align:left;font-weight:600;}
+  td{padding:0.75rem 1rem;border-bottom:1px solid #e5e7eb;}
+  tr:hover{background:#f9fafb;}
+  .stat-cell{font-weight:600;color:var(--primary);}
+  .total-row{background:#f0f0f0 !important;font-weight:bold;}
 
-  @keyframes spin{
-    to{transform:rotate(360deg)}
-  }
+  .info-box{background:#e6f7f7;padding:16px;border-left:4px solid var(--primary);border-radius:8px;margin-bottom:20px;font-size:14px;color:#0f1724;}
+  .info-box strong{color:var(--primary);}
 
-  .stats-table{
-    overflow-x:auto;
-    margin-top:1rem;
-  }
-
-  table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:0.95rem;
-  }
-
-  th{
-    background:var(--primary);
-    color:white;
-    padding:1rem;
-    text-align:left;
-    font-weight:600;
-  }
-
-  td{
-    padding:0.75rem 1rem;
-    border-bottom:1px solid #e5e7eb;
-  }
-
-  tr:hover{
-    background:#f9fafb;
-  }
-
-  .stat-cell{
-    font-weight:600;
-    color:var(--primary);
-  }
-
-  .total-row{
-    background:#f0f0f0 !important;
-    font-weight:bold;
-  }
-
-  footer{
-    text-align:center;
-    margin-top:48px;
-    padding-top:32px;
-    border-top:2px solid #e6eef6;
-    color:var(--muted);
-    font-size:14px;
-  }
+  footer{text-align:center;margin-top:48px;padding-top:32px;border-top:2px solid #e6eef6;color:var(--muted);font-size:14px;}
   footer a{color:var(--primary);text-decoration:none;font-weight:600}
   footer a:hover{text-decoration:underline}
 
@@ -155,6 +68,10 @@
       <h2 style="margin:0 0 1rem;font-size:22px;color:#0f1724;font-weight:700">📊 Répartition des professionnels</h2>
       <p style="color:var(--muted);margin:0 0 1.5rem">Nombre de professionnels référencés par département et par profession.</p>
 
+      <div class="info-box">
+        <strong>ℹ️ Note importante :</strong> Un même professionnel peut apparaître dans plusieurs départements s'il intervient dans plusieurs zones géographiques.
+      </div>
+
       <div id="stats-loading" class="loading-state">
         <div class="loading-spinner"></div>
         <h3 style="margin:0 0 0.5rem;color:#0f1724">⏳ Chargement des statistiques...</h3>
@@ -178,6 +95,13 @@
             <tbody id="stats-body">
             </tbody>
           </table>
+        </div>
+
+        <div style="margin-top:24px;padding:16px;background:#f9fafb;border-radius:8px;font-size:13px;color:#6b7280;">
+          <strong style="color:#0f1724;">📌 Lecture du tableau :</strong><br>
+          • Les chiffres indiquent le nombre de professionnels <strong>intervenant</strong> dans chaque département<br>
+          • Un professionnel qui intervient dans 3 départements compte dans les 3 lignes<br>
+          • Le total reflète la couverture géographique globale
         </div>
       </div>
     </div>
@@ -267,38 +191,47 @@
 
     function genererStatistiques(data) {
       const statsBody = document.getElementById('stats-body');
-      
       const stats = {};
       
+      // 🆕 NOUVELLE LOGIQUE : Lire DepartementsCouvertes (colonne AD)
       data.forEach(p => {
-        const deptRaw = p.Departement || '';
-        const codeDept = deptRaw.split('-')[0].trim();
+        const departementsRaw = p.DepartementsCouvertes || '';
         const profession = p.Profession || '';
         
-        if (!codeDept || !profession) return;
+        if (!departementsRaw || !profession) return;
         
-        if (!stats[codeDept]) {
-          stats[codeDept] = {
-            nom: deptRaw,
-            'Éducateur spécialisé': 0,
-            'Ergothérapeute': 0,
-            'Psychologue': 0,
-            'Psychomotricien': 0,
-            'Orthophoniste': 0,
-            total: 0
-          };
-        }
+        // Séparer les départements par virgule
+        const departements = departementsRaw.split(',').map(d => d.trim()).filter(d => d);
         
-        if (stats[codeDept][profession] !== undefined) {
-          stats[codeDept][profession]++;
-          stats[codeDept].total++;
-        }
+        // Compter le pro dans CHAQUE département
+        departements.forEach(codeDept => {
+          if (!stats[codeDept]) {
+            stats[codeDept] = {
+              nom: codeDept, // On affiche juste le code
+              'Éducateur spécialisé': 0,
+              'Ergothérapeute': 0,
+              'Psychologue': 0,
+              'Psychomotricien': 0,
+              'Orthophoniste': 0,
+              total: 0
+            };
+          }
+          
+          if (stats[codeDept][profession] !== undefined) {
+            stats[codeDept][profession]++;
+            stats[codeDept].total++;
+          }
+        });
       });
       
       const deptsOrdonnes = Object.keys(stats).sort((a, b) => {
-        const numA = parseInt(a);
-        const numB = parseInt(b);
-        return numA - numB;
+        // Gérer les départements spéciaux (2A, 2B, 971, etc.)
+        const getNumericValue = (code) => {
+          if (code === '2A') return 20.1;
+          if (code === '2B') return 20.2;
+          return parseInt(code) || 999;
+        };
+        return getNumericValue(a) - getNumericValue(b);
       });
       
       if (deptsOrdonnes.length === 0) {
@@ -332,7 +265,7 @@
         const trTotal = document.createElement('tr');
         trTotal.className = 'total-row';
         trTotal.innerHTML = `
-          <td><strong>TOTAL</strong></td>
+          <td><strong>TOTAL*</strong></td>
           <td class="stat-cell">${totalGeneral.educ}</td>
           <td class="stat-cell">${totalGeneral.ergo}</td>
           <td class="stat-cell">${totalGeneral.psy}</td>
