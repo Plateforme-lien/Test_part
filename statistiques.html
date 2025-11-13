@@ -187,26 +187,18 @@
             <button onclick="location.reload()" style="margin-top:1rem;padding:0.5rem 1rem;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer">🔄 Réessayer</button>
           </div>`;
       }
-    }
+    } 
+    
 function genererStatistiques(data) {
   const statsBody = document.getElementById('stats-body');
   const stats = {};
-  
-  console.log('📊 Début génération stats, nb lignes:', data.length);
-  
-  // ✅ CORRECTION PARSING : Lire DepartementsCouvertes (colonne AD)
+    
+  // Lire DepartementsCouvertes (colonne AD)
   data.forEach((p, index) => {
     const departementsRaw = String(p.DepartementsCouvertes || '').trim();
     const profession = String(p.Profession || '').trim();
     
-    console.log(`Ligne ${index + 1}:`, {
-      nom: p.Nom,
-      departements: departementsRaw,
-      profession: profession
-    });
-    
     if (!departementsRaw || !profession) {
-      console.log(`⚠️ Ligne ${index + 1} ignorée (départements ou profession vide)`);
       return;
     }
     
@@ -215,9 +207,7 @@ function genererStatistiques(data) {
       .split(',')
       .map(d => d.trim())
       .filter(d => d.length > 0);
-    
-    console.log(`  → ${departements.length} département(s):`, departements);
-    
+        
     // Compter le pro dans CHAQUE département
     departements.forEach(codeDept => {
       if (!stats[codeDept]) {
@@ -235,9 +225,6 @@ function genererStatistiques(data) {
       if (stats[codeDept][profession] !== undefined) {
         stats[codeDept][profession]++;
         stats[codeDept].total++;
-        console.log(`  ✅ ${codeDept}: +1 ${profession}`);
-      } else {
-        console.log(`  ⚠️ Profession inconnue: ${profession}`);
       }
     });
   });
