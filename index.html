@@ -209,7 +209,7 @@
 }
 
 .welcome-text {
-  color: #6b7280; /* gris doux */
+  color: #6b7280;
   text-align: justify;
   font-size: 18px;
   line-height: 1.6;
@@ -364,44 +364,41 @@
   </div>
 
   <script>
-    // Chargement des statistiques
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbww78Q-FrcILGHJu0O0lRgajYaFn9qJPq8ViSwDEixSOQ_ZiTWgJVX64mMcNHwirwFf/exec';
     const CACHE_KEY = 'tsa_data';
-    const CACHE_DURATION = 60 * 60 * 1000; // 1 heure
+    const CACHE_DURATION = 60 * 60 * 1000;
 
     function parseCSV(text) {
-  // Corrige les retours à la ligne Windows \r\n
-  const lines = text.replace(/\r/g, '').split('\n');
-  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-  const data = [];
+      const lines = text.replace(/\r/g, '').split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      const data = [];
 
-  for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    const values = [];
-    let current = '', inQuotes = false;
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
+        const values = [];
+        let current = '', inQuotes = false;
 
-    for (let j = 0; j < lines[i].length; j++) {
-      const char = lines[i][j];
-      if (char === '"') inQuotes = !inQuotes;
-      else if (char === ',' && !inQuotes) {
+        for (let j = 0; j < lines[i].length; j++) {
+          const char = lines[i][j];
+          if (char === '"') inQuotes = !inQuotes;
+          else if (char === ',' && !inQuotes) {
+            values.push(current.trim().replace(/^"|"$/g, ''));
+            current = '';
+          } else current += char;
+        }
         values.push(current.trim().replace(/^"|"$/g, ''));
-        current = '';
-      } else current += char;
-    }
-    values.push(current.trim().replace(/^"|"$/g, ''));
 
-    const row = {};
-    headers.forEach((header, index) => {
-      row[header] = values[index] || '';
-    });
-    data.push(row);
-  }
-  return data;
-}
+        const row = {};
+        headers.forEach((header, index) => {
+          row[header] = values[index] || '';
+        });
+        data.push(row);
+      }
+      return data;
+    }
 
     async function chargerStats() {
       try {
-        // Vérifie le cache
         const cached = localStorage.getItem(CACHE_KEY);
         if (cached) {
           const {data, timestamp} = JSON.parse(cached);
@@ -411,12 +408,10 @@
           }
         }
 
-        // Charge depuis Google Sheets
         const response = await fetch(SCRIPT_URL);
         const csvText = await response.text();
         const data = parseCSV(csvText);
         
-        // Stocke en cache
         localStorage.setItem(CACHE_KEY, JSON.stringify({
           data: data,
           timestamp: Date.now()
@@ -434,17 +429,21 @@
       // Compte les professionnels
       document.getElementById('total-pros').textContent = data.length;
       
-      // Compte les départements uniques
+      // 🆕 CORRECTION : Lire DepartementsCouvertes au lieu de Departement
       const depts = new Set();
       data.forEach(p => {
-        const dept = p.Departement || '';
-        const codeDept = dept.split('-')[0].trim();
-        if (codeDept) depts.add(codeDept);
+        const departementsRaw = p.DepartementsCouvertes || '';
+        
+        if (departementsRaw) {
+          // Séparer par virgule et nettoyer
+          const departements = departementsRaw.split(',').map(d => d.trim()).filter(d => d);
+          departements.forEach(codeDept => depts.add(codeDept));
+        }
       });
+      
       document.getElementById('total-depts').textContent = depts.size;
     }
 
-    // Charge les stats au chargement de la page
     chargerStats();
   </script>
 </body>
