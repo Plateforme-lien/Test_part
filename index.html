@@ -425,24 +425,36 @@
       }
     }
 
-    function afficherStats(data) {
-      // Compte les professionnels
-      document.getElementById('total-pros').textContent = data.length;
+function afficherStats(data) {
+  // Compte les professionnels (= nombre de lignes)
+  document.getElementById('total-pros').textContent = data.length;
+  
+  // CORRECTION PARSING : Lire DepartementsCouvertes
+  const depts = new Set();
+  data.forEach(p => {
+    const departementsRaw = String(p.DepartementsCouvertes || '').trim();
+    
+    console.log('📍 Departements bruts:', departementsRaw); // Debug
+    
+    if (departementsRaw) {
+      // Split par virgule, trim chaque élément, filtre les vides
+      const departements = departementsRaw
+        .split(',')
+        .map(d => d.trim())
+        .filter(d => d.length > 0);
       
-      // 🆕 CORRECTION : Lire DepartementsCouvertes au lieu de Departement
-      const depts = new Set();
-      data.forEach(p => {
-        const departementsRaw = p.DepartementsCouvertes || '';
-        
-        if (departementsRaw) {
-          // Séparer par virgule et nettoyer
-          const departements = departementsRaw.split(',').map(d => d.trim()).filter(d => d);
-          departements.forEach(codeDept => depts.add(codeDept));
-        }
+      console.log('📊 Départements extraits:', departements); // Debug
+      
+      departements.forEach(codeDept => {
+        depts.add(codeDept);
+        console.log('✅ Ajouté:', codeDept); // Debug
       });
-      
-      document.getElementById('total-depts').textContent = depts.size;
     }
+  });
+  
+  console.log('🎯 Total départements uniques:', depts.size, Array.from(depts)); // Debug
+  document.getElementById('total-depts').textContent = depts.size;
+}
 
     chargerStats();
   </script>
