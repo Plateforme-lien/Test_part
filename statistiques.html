@@ -188,41 +188,61 @@
           </div>`;
       }
     }
-
-    function genererStatistiques(data) {
-      const statsBody = document.getElementById('stats-body');
-      const stats = {};
+function genererStatistiques(data) {
+  const statsBody = document.getElementById('stats-body');
+  const stats = {};
+  
+  console.log('📊 Début génération stats, nb lignes:', data.length);
+  
+  // ✅ CORRECTION PARSING : Lire DepartementsCouvertes (colonne AD)
+  data.forEach((p, index) => {
+    const departementsRaw = String(p.DepartementsCouvertes || '').trim();
+    const profession = String(p.Profession || '').trim();
+    
+    console.log(`Ligne ${index + 1}:`, {
+      nom: p.Nom,
+      departements: departementsRaw,
+      profession: profession
+    });
+    
+    if (!departementsRaw || !profession) {
+      console.log(`⚠️ Ligne ${index + 1} ignorée (départements ou profession vide)`);
+      return;
+    }
+    
+    // Split par virgule, trim, filtre les vides
+    const departements = departementsRaw
+      .split(',')
+      .map(d => d.trim())
+      .filter(d => d.length > 0);
+    
+    console.log(`  → ${departements.length} département(s):`, departements);
+    
+    // Compter le pro dans CHAQUE département
+    departements.forEach(codeDept => {
+      if (!stats[codeDept]) {
+        stats[codeDept] = {
+          nom: codeDept,
+          'Éducateur spécialisé': 0,
+          'Ergothérapeute': 0,
+          'Psychologue': 0,
+          'Psychomotricien': 0,
+          'Orthophoniste': 0,
+          total: 0
+        };
+      }
       
-      // 🆕 NOUVELLE LOGIQUE : Lire DepartementsCouvertes (colonne AD)
-      data.forEach(p => {
-        const departementsRaw = p.DepartementsCouvertes || '';
-        const profession = p.Profession || '';
-        
-        if (!departementsRaw || !profession) return;
-        
-        // Séparer les départements par virgule
-        const departements = departementsRaw.split(',').map(d => d.trim()).filter(d => d);
-        
-        // Compter le pro dans CHAQUE département
-        departements.forEach(codeDept => {
-          if (!stats[codeDept]) {
-            stats[codeDept] = {
-              nom: codeDept, // On affiche juste le code
-              'Éducateur spécialisé': 0,
-              'Ergothérapeute': 0,
-              'Psychologue': 0,
-              'Psychomotricien': 0,
-              'Orthophoniste': 0,
-              total: 0
-            };
-          }
-          
-          if (stats[codeDept][profession] !== undefined) {
-            stats[codeDept][profession]++;
-            stats[codeDept].total++;
-          }
-        });
-      });
+      if (stats[codeDept][profession] !== undefined) {
+        stats[codeDept][profession]++;
+        stats[codeDept].total++;
+        console.log(`  ✅ ${codeDept}: +1 ${profession}`);
+      } else {
+        console.log(`  ⚠️ Profession inconnue: ${profession}`);
+      }
+    });
+  });
+  
+  console.log('📈 Stats finales:', stats);
       
       const deptsOrdonnes = Object.keys(stats).sort((a, b) => {
         // Gérer les départements spéciaux (2A, 2B, 971, etc.)
