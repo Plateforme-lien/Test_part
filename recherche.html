@@ -896,8 +896,10 @@
       
       communes.forEach(c => {
         const option = document.createElement('option');
-        option.value = c.nom;
-        option.textContent = c.nom;
+        const cp = c.codesPostaux && c.codesPostaux.length > 0 ? c.codesPostaux[0] : '';
+        const communeAvecCP = cp ? `${c.nom} (${cp})` : c.nom;
+        option.value = communeAvecCP;
+        option.textContent = communeAvecCP;
         selectCommune.appendChild(option);
       });
     }
@@ -954,8 +956,8 @@
       div.innerHTML = '<div class="card"><div class="loading-state"><div class="loading-spinner"></div><h3 style="margin:0">🔍 Recherche en cours...</h3></div></div>';
       
       let coordsParticulier = null;
-      const communeDataPart = toutesLesCommunesDisponibles.find(c => normaliser(c.nom) === normaliser(communePart));
-      if (communeDataPart && communeDataPart.centre) {
+      const communePartNom = communePart.split('(')[0].trim();
+      const communeDataPart = toutesLesCommunesDisponibles.find(c => normaliser(c.nom) === normaliser(communePartNom));      if (communeDataPart && communeDataPart.centre) {
         coordsParticulier = {
           lon: communeDataPart.centre.coordinates[0],
           lat: communeDataPart.centre.coordinates[1]
@@ -1004,7 +1006,8 @@
     async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
       const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
       const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
-      const communeProNom = professionnel[COLONNES.commune] || "";
+      const communeProBrute = professionnel[COLONNES.commune] || "";
+      const communeProNom = communeProBrute.split('(')[0].trim();      
       const communesCouvertesRaw = professionnel[COLONNES.communesCouvertes] || "";
       
       const codeDeptPro = deptProRaw.split('-')[0].trim();
@@ -1059,8 +1062,11 @@
         
         if (communesCouvertesRaw) {
           // ✅ Séparer par PIPE |
-          const communesCouvertes = communesCouvertesRaw.split('|').map(c => normaliser(c.trim()));
-          const communePartNormalisee = normaliser(communeParticulier);
+          const communesCouvertes = communesCouvertesRaw.split('|').map(c => {
+            const nomCommune = c.split('(')[0].trim();
+            return normaliser(nomCommune);
+          });
+          const communePartNormalisee = normaliser(communeParticulier.split('(')[0].trim());
           
           console.log(`🔍 Recherche "${communePartNormalisee}" dans:`, communesCouvertes.slice(0, 5));
           
@@ -1070,8 +1076,9 @@
               let coordsPro = null;
               
               if (cacheCommunesParDept[codeDeptPro]) {
-                const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNom));
-                if (communePro && communePro.centre) {
+                const communeProBrute = professionnel[COLONNES.commune] || "";
+                const communeProNomSeul = communeProBrute.split('(')[0].trim();
+                const communePro = cacheCommunesParDept[codeDeptPro].find(c => normaliser(c.nom) === normaliser(communeProNomSeul));                if (communePro && communePro.centre) {
                   coordsPro = {
                     lon: communePro.centre.coordinates[0],
                     lat: communePro.centre.coordinates[1]
@@ -1489,3 +1496,8 @@
   </script>
 </body>
 </html>
+
+
+
+
+
