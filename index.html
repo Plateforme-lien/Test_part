@@ -429,30 +429,21 @@ function afficherStats(data) {
   // Compte les professionnels (= nombre de lignes)
   document.getElementById('total-pros').textContent = data.length;
   
-  // CORRECTION PARSING : Lire DepartementsCouvertes
+  // Lire DepartementsCouvertes
   const depts = new Set();
   data.forEach(p => {
     const departementsRaw = String(p.DepartementsCouvertes || '').trim();
     
-    console.log('📍 Departements bruts:', departementsRaw); // Debug
-    
     if (departementsRaw) {
-      // Split par virgule, trim chaque élément, filtre les vides
       const departements = departementsRaw
         .split(',')
         .map(d => d.trim())
         .filter(d => d.length > 0);
       
-      console.log('📊 Départements extraits:', departements); // Debug
-      
-      departements.forEach(codeDept => {
-        depts.add(codeDept);
-        console.log('✅ Ajouté:', codeDept); // Debug
-      });
+      departements.forEach(codeDept => depts.add(codeDept));
     }
   });
   
-  console.log('🎯 Total départements uniques:', depts.size, Array.from(depts)); // Debug
   document.getElementById('total-depts').textContent = depts.size;
 }
 
