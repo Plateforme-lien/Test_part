@@ -894,13 +894,13 @@
       const selectCommune = document.getElementById('commune');
       selectCommune.innerHTML = '<option value="">-- Toutes les communes --</option>';
       
-      communes.forEach(c => {
+     communes.forEach(c => {
         const option = document.createElement('option');
         const cp = c.codesPostaux && c.codesPostaux.length > 0 ? c.codesPostaux[0] : '';
         const communeAvecCP = cp ? `${c.nom} (${cp})` : c.nom;
         option.value = communeAvecCP;
         option.textContent = communeAvecCP;
-        option.title = "";
+        option.setAttribute('title', '');
         selectCommune.appendChild(option);
       });
     }
