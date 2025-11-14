@@ -900,6 +900,7 @@
         const communeAvecCP = cp ? `${c.nom} (${cp})` : c.nom;
         option.value = communeAvecCP;
         option.textContent = communeAvecCP;
+        option.title = "";
         selectCommune.appendChild(option);
       });
     }
