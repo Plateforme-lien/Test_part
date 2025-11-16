@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>FAQ - Trouver un Professionnel TSA</title>
+<style>
+  :root{
+    --bg:#f6f8fb;
+    --card:#fff;
+    --primary:#0ea5a4;
+    --primary-dark:#0d8887;
+    --muted:#6b7280;
+    --section-bg:#f9fafb;
+  }
+
+  body{
+    font-family:Inter,Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    margin:0;
+    padding:24px;
+    line-height:1.6;
+  }
+
+  .wrap{max-width:980px;margin:18px auto}
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:32px 36px;
+    box-shadow:0 8px 30px rgba(2,6,23,0.06);
+    margin-bottom:24px;
+  }
+
+  .nav-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:32px;
+    padding-bottom:16px;
+    border-bottom:2px solid #e6eef6;
+  }
+  .nav-header h1{
+    margin:0;
+    font-size:22px;
+    color:#0f1724;
+  }
+  .nav-links{
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:color 0.2s;
+  }
+  .nav-links a:hover{color:var(--primary);}
+
+  .faq-item{
+    margin-bottom:32px;
+    padding-bottom:24px;
+    border-bottom:1px solid #e5e7eb;
+  }
+  
+  .faq-item:last-child{
+    border-bottom:none;
+  }
+
+  .faq-question{
+    color:var(--primary);
+    font-size:18px;
+    font-weight:700;
+    margin:0 0 12px;
+  }
+
+  .faq-answer{
+    color:#333;
+    line-height:1.7;
+    margin:0;
+  }
+
+  .faq-answer ul{
+    margin:12px 0;
+    padding-left:24px;
+  }
+
+  .faq-answer li{
+    margin:8px 0;
+  }
+
+  .info-box{
+    background:#e6f7f7;
+    border:2px solid #b3e5e4;
+    border-left:4px solid var(--primary);
+    padding:20px;
+    border-radius:12px;
+    margin:24px 0;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:48px;
+    padding-top:32px;
+    border-top:2px solid #e6eef6;
+    color:var(--muted);
+    font-size:14px;
+  }
+  footer a{color:var(--primary);text-decoration:none;font-weight:600}
+  footer a:hover{text-decoration:underline}
+
+  @media(max-width:768px){
+    body{padding:16px;}
+    .card{padding:24px 20px;}
+    .nav-header{flex-direction:column;align-items:flex-start;gap:12px;}
+    .nav-links{flex-wrap:wrap;}
+    .faq-question{font-size:16px;}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav-header">
+      <h1>❓ Questions Fréquentes</h1>
+      <nav class="nav-links">
+        <a href="index.html">🏠 Accueil</a>
+        <a href="recherche.html">🔍 Rechercher</a>
+        <a href="statistiques.html">📊 Statistiques</a>
+        <a href="mentions.html">📋 Mentions légales</a>
+      </nav>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 24px;font-size:24px;color:#0f1724;font-weight:700">
+        Vous avez des questions ? Nous avons les réponses !
+      </h2>
+
+      <!-- SECTION 1 : UTILISATION -->
+      <div class="faq-item">
+        <h3 class="faq-question">🔍 Comment rechercher un professionnel ?</h3>
+        <div class="faq-answer">
+          <p>C'est très simple :</p>
+          <ol>
+            <li>Rendez-vous sur la page <a href="recherche.html" style="color:var(--primary)">Recherche</a></li>
+            <li>Remplissez <strong>tous les critères obligatoires</strong> : métier, tranche d'âge, département, commune</li>
+            <li>Cliquez sur "Lancer la recherche"</li>
+            <li>Les professionnels disponibles dans votre secteur s'affichent</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">❌ Pourquoi aucun professionnel n'apparaît dans ma recherche ?</h3>
+        <div class="faq-answer">
+          <p>Plusieurs raisons possibles :</p>
+          <ul>
+            <li><strong>Aucun professionnel disponible</strong> n'intervient actuellement dans votre commune</li>
+            <li>Tous les professionnels de votre secteur sont <strong>complets</strong></li>
+            <li>La plateforme est <strong>en phase de test</strong> sur certains départements uniquement (54, 55, 57, 88)</li>
+          </ul>
+          <p style="margin-top:12px"><strong>💡 Que faire ?</strong></p>
+          <ul>
+            <li>Essayez avec une <strong>commune voisine</strong></li>
+            <li>Revenez consulter la plateforme <strong>régulièrement</strong> (de nouveaux professionnels s'inscrivent)</li>
+            <li>Contactez le <strong>CRA de votre région</strong> pour d'autres pistes</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">📏 Les distances affichées sont-elles précises ?</h3>
+        <div class="faq-answer">
+          <p><strong>Non, ce sont des estimations approximatives (±3-5 km).</strong></p>
+          <p>Pourquoi ?</p>
+          <ul>
+            <li>Pour les professionnels en <strong>cabinet</strong> : calcul à vol d'oiseau depuis le centre de votre commune</li>
+            <li>Pour les professionnels qui <strong>se déplacent</strong> : calcul de zone basé sur le temps de trajet en voiture</li>
+          </ul>
+          <p style="margin-top:12px;color:#dc2626;font-weight:600">
+            ⚠️ Contactez TOUJOURS le professionnel pour confirmer qu'il peut intervenir chez vous.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">⏱️ Combien de temps avant d'avoir une réponse ?</h3>
+        <div class="faq-answer">
+          <p>Les délais varient selon les professionnels :</p>
+          <ul>
+            <li>Certains répondent en <strong>24-48h</strong></li>
+            <li>D'autres peuvent mettre <strong>plusieurs jours</strong> (forte sollicitation)</li>
+            <li>Certains ne répondent pas s'ils n'ont plus de place disponible</li>
+          </ul>
+          <p style="margin-top:12px;font-weight:600">
+            Soyez patient(e) et évitez de relancer trop rapidement.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">📧 Dois-je contacter plusieurs professionnels en même temps ?</h3>
+        <div class="faq-answer">
+          <p style="color:#dc2626;font-weight:600">
+            ⚠️ Non, nous vous recommandons de contacter <strong>un seul professionnel à la fois</strong>.
+          </p>
+          <p>Pourquoi ?</p>
+          <ul>
+            <li>Les professionnels sont <strong>très sollicités</strong></li>
+            <li>Si vous contactez 5 pros et que 3 répondent positivement, vous allez devoir en refuser 2</li>
+            <li>Ces places auraient pu être données à d'autres familles</li>
+          </ul>
+          <p style="margin-top:12px"><strong>💡 Bonne pratique :</strong></p>
+          <ol>
+            <li>Contactez <strong>1 professionnel</strong></li>
+            <li>Attendez sa réponse (3-7 jours)</li>
+            <li>Si pas de réponse ou refus, contactez-en un autre</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- SECTION 2 : CONFIDENTIALITÉ -->
+      <div class="faq-item">
+        <h3 class="faq-question">🔒 Mes données personnelles sont-elles protégées ?</h3>
+        <div class="faq-answer">
+          <p><strong>Cette plateforme ne collecte AUCUNE donnée personnelle des particuliers.</strong></p>
+          <ul>
+            <li>Pas d'inscription requise</li>
+            <li>Pas de cookies publicitaires</li>
+            <li>Pas de tracking</li>
+          </ul>
+          <p style="margin-top:12px">
+            Seules les recherches sont enregistrées de façon <strong>anonyme et agrégée</strong> pour améliorer le service (statistiques).
+          </p>
+        </div>
+      </div>
+
+      <!-- SECTION 3 : PLATEFORME -->
+      <div class="faq-item">
+        <h3 class="faq-question">💰 La plateforme est-elle payante ?</h3>
+        <div class="faq-answer">
+          <p style="font-size:18px;font-weight:600;color:var(--primary)">
+            Non, elle est 100% gratuite.
+          </p>
+          <ul>
+            <li>Gratuite pour les <strong>particuliers</strong></li>
+            <li>Gratuite pour les <strong>professionnels</strong></li>
+            <li>Aucune commission sur les mises en relation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">🏥 Les professionnels sont-ils vérifiés ?</h3>
+        <div class="faq-answer">
+          <p>Oui, partiellement :</p>
+          <ul>
+            <li>✅ Tous les professionnels ont un <strong>numéro SIRET vérifié</strong> (entreprise légale)</li>
+            <li>✅ Ils ont donné leur <strong>consentement</strong> pour être référencés</li>
+            <li>⚠️ La plateforme ne vérifie <strong>pas les qualifications</strong> ni les agréments spécifiques</li>
+          </ul>
+          <p style="margin-top:12px;color:#dc2626;font-weight:600">
+            ℹ️ Il vous appartient de vérifier les diplômes et agréments lors du premier contact.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">📍 Quels départements sont couverts ?</h3>
+        <div class="faq-answer">
+          <p style="background:#fff3cd;padding:12px;border-radius:8px;border-left:4px solid #ffc107">
+            <strong>⚠️ Plateforme en phase de test</strong><br>
+            Actuellement disponible sur : <strong>54, 55, 57, 88</strong> 
+            (Meurthe-et-Moselle, Meuse, Moselle, Vosges)
+          </p>
+          <p style="margin-top:12px">
+            Le déploiement sera progressif selon les retours et la demande.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">🔄 Les données sont-elles à jour ?</h3>
+        <div class="faq-answer">
+          <p>Les professionnels peuvent <strong>modifier leurs informations à tout moment</strong> :</p>
+          <ul>
+            <li>Disponibilité</li>
+            <li>Coordonnées</li>
+            <li>Secteur d'intervention</li>
+          </ul>
+          <p style="margin-top:12px">
+            La date de dernière mise à jour est affichée sur chaque fiche professionnel.
+          </p>
+          <div style="background:#f0f9ff;padding:12px;margin-top:12px;border-radius:8px;border-left:4px solid #3b82f6">
+            <strong>💡 Bon à savoir :</strong> Les données sont mises en cache pendant <strong>15 minutes</strong> 
+            pour accélérer la navigation. Un rechargement automatique se fait ensuite.
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4 : PROBLÈMES -->
+      <div class="faq-item">
+        <h3 class="faq-question">🐛 J'ai trouvé un bug ou une information erronée</h3>
+        <div class="faq-answer">
+          <p>Merci de le signaler par email à : 
+            <a href="mailto:plateforme.lien.pro@gmail.com" style="color:var(--primary);font-weight:600">
+              plateforme.lien.pro@gmail.com
+            </a>
+          </p>
+          <p style="margin-top:12px">
+            Précisez au maximum le problème rencontré (navigateur, étapes, message d'erreur).
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">💬 Un professionnel ne répond pas, que faire ?</h3>
+        <div class="faq-answer">
+          <p>Plusieurs explications possibles :</p>
+          <ul>
+            <li>Le professionnel a beaucoup de demandes (délai de réponse long)</li>
+            <li>Il n'a plus de place disponible</li>
+            <li>Il n'a pas vu votre message (vérifiez ses spams si email direct)</li>
+          </ul>
+          <p style="margin-top:12px"><strong>💡 Que faire ?</strong></p>
+          <ul>
+            <li>Attendez <strong>7 jours</strong> avant de relancer</li>
+            <li>Si toujours pas de réponse, contactez un <strong>autre professionnel</strong></li>
+            <li>N'insistez pas lourdement (les pros sont débordés)</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- SECTION 5 : POUR ALLER PLUS LOIN -->
+      <div class="info-box" style="margin-top:40px">
+        <h3 style="margin:0 0 12px;color:var(--primary);font-size:18px">
+          ❓ Votre question n'est pas dans la FAQ ?
+        </h3>
+        <p style="margin:0">
+          Contactez-nous par email : 
+          <a href="mailto:plateforme.lien.pro@gmail.com" style="color:var(--primary);font-weight:600">
+            plateforme.lien.pro@gmail.com
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        <a href="index.html">Accueil</a> • 
+        <a href="recherche.html">Rechercher</a> • 
+        <a href="statistiques.html">Statistiques</a> • 
+        <a href="mentions.html">Mentions légales</a>
+      </p>
+      <p style="margin-top:12px;font-size:13px">© 2025 - Plateforme de mise en relation TSA</p>
+    </footer>
+  </div>
+</body>
+</html>
