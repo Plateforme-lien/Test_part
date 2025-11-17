@@ -39,64 +39,18 @@
     padding-bottom:16px;
     border-bottom:2px solid #e6eef6;
   }
-  .nav-header h1{
-    margin:0;
-    font-size:22px;
-    color:#0f1724;
-  }
+.nav-header h1{margin:0;font-size:22px;color:#0f1724;}
   
-.nav-links{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-.nav-links a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:600;
-  padding:8px 16px;
-  border-radius:8px;
-  transition:all 0.2s;
-  position:relative;
-}
+.nav-links{display:flex;gap:8px;align-items:center;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 16px;border-radius:8px;transition:all 0.2s;position:relative;}
   
-.nav-links a:hover{
-  color:var(--primary);
-  background:rgba(14, 165, 164, 0.08);
-}
-.nav-links a.active{
-  color:var(--primary);
-  background:rgba(14, 165, 164, 0.12);
-  font-weight:700;
-}
-.nav-links a.active::after{
-  content:'';
-  position:absolute;
-  bottom:4px;
-  left:16px;
-  right:16px;
-  height:2px;
-  background:var(--primary);
-  border-radius:2px;
-}
-
-  .hero{
-    text-align:center;
-    padding:40px 0 32px;
-  }
-  .hero h1{
-    margin:0 0 16px;
-    font-size:32px;
-    color:#0f1724;
-    font-weight:700;
-  }
-  .hero .subtitle{
-    font-size:18px;
-    color:var(--muted);
-    margin:0 0 32px;
-    line-height:1.6;
-  }
+.nav-links a:hover{color:var(--primary);background:rgba(14, 165, 164, 0.08);}
+.nav-links a.active{color:var(--primary);background:rgba(14, 165, 164, 0.12);font-weight:700;}
+.nav-links a.active::after{content:'';position:absolute;bottom:4px;left:16px;right:16px;height:2px;background:var(--primary);border-radius:2px;}
+  
+.hero{text-align:center;padding:40px 0 32px;}
+.hero h1{margin:0 0 16px;font-size:32px;color:#0f1724;font-weight:700;}
+.hero .subtitle{font-size:18px;color:var(--muted);margin:0 0 32px;line-height:1.6;}
 
   .cta-button{
     display:inline-block;
@@ -110,10 +64,7 @@
     text-decoration:none;
     transition:all 0.2s;
   }
-  .cta-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 6px 20px rgba(14,165,164,0.5);
-  }
+  .cta-button:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(14,165,164,0.5);}
 
   .features{
     display:grid;
@@ -163,12 +114,7 @@
   .step-content h4{margin:0 0 8px;font-size:16px;color:#0f1724;font-weight:700}
   .step-content p{margin:0;color:var(--muted);font-size:15px}
 
-  .stats-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-    gap:24px;
-    margin:32px 0;
-  }
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:24px;margin:32px 0;}
   .stat-box{
     background:linear-gradient(135deg, var(--primary), var(--primary-dark));
     color:white;
@@ -176,16 +122,8 @@
     border-radius:12px;
     text-align:center;
   }
-  .stat-number{
-    font-size:48px;
-    font-weight:700;
-    display:block;
-  }
-  .stat-label{
-    font-size:16px;
-    opacity:0.9;
-    margin-top:8px;
-  }
+  .stat-number{font-size:48px;font-weight:700;display:block;}
+  .stat-label{font-size:16px;opacity:0.9;margin-top:8px;}
 
   .loading-indicator{
     display:inline-block;
@@ -239,6 +177,7 @@
 }
 </style>
 </head>
+  
 <body>
   <div class="wrap">
     <div class="nav-header">
@@ -272,8 +211,6 @@
     <p style="margin-top:12px">Le déploiement sera progressif selon les retours et la demande.</p>
   </div>
 </div>
-
-    lateforme en test</strong> sur les départements 54, 55, 57, 88 (Meurthe-et-Moselle, Meuse, Moselle, Vosges)
 
     <div class="card">
       <h2 style="margin:0 0 24px;font-size:22px;color:#0f1724;font-weight:700">Comment ça fonctionne ?</h2>
