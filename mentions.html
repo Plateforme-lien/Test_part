@@ -22,7 +22,7 @@
     line-height:1.6;
   }
 
-  .wrap{max-width:980px;margin:18px auto}
+  .wrap{max-width:980px;margin:18px auto;counter-reset:section;}
   
   .card{
     background:var(--card);
@@ -43,7 +43,7 @@
   /* HIÉRARCHIE CLAIRE DES TITRES AVEC NUMÉROTATION */
   
   /* Compteurs pour numérotation automatique */
-  .card{counter-reset:section;}
+    .card{}
   h2{counter-reset:subsection;}
   h3{counter-reset:subsubsection;}
   .subsection{counter-increment:subsubsection;}
