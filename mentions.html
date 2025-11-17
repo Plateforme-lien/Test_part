@@ -39,19 +39,60 @@
   .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;padding:8px 16px;border-radius:8px;transition:all 0.2s;position:relative;}
   .nav-links a:hover{color:var(--primary);background:rgba(14, 165, 164, 0.08);}
   .nav-links a.active{color:var(--primary);background:rgba(14, 165, 164, 0.12);font-weight:700;}
-  .nav-links a.active::after{content:'';position:absolute;bottom:4px;left:16px;right:16px;height:2px;background:var(--primary);border-radius:2px;}
 
+  /* HIÉRARCHIE CLAIRE DES TITRES AVEC NUMÉROTATION */
+  
+  /* Compteurs pour numérotation automatique */
+  .card{counter-reset:section;}
+  h2{counter-reset:subsection;}
+  h3{counter-reset:subsubsection;}
+  .subsection{counter-increment:subsubsection;}
+  
+  /* H2 : Sections principales (1, 2, 3...) */
   h2{
     color:#0f1724;
     font-size:24px;
-    margin:32px 0 16px;
+    margin:48px 0 24px;
+    padding-top:32px;
+    border-top:2px solid #e6eef6;
     font-weight:700;
+    counter-increment:section;
+  }
+  h2:first-of-type{border-top:none;padding-top:0;margin-top:0;}
+  h2::before{
+    content:counter(section) ". ";
+    color:#0f1724;
+    font-size:28px;
+    font-weight:700;
+    margin-right:8px;
   }
 
+  /* H3 : Sous-sections (1.1, 1.2...) */
   h3{
     color:var(--primary);
     font-size:18px;
+    margin:32px 0 16px;
+    font-weight:700;
+    counter-increment:subsection;
+  }
+  h3::before{
+    content:counter(section) "." counter(subsection) " ";
+    font-size:18px;
+    margin-right:6px;
+  }
+
+  /* Sous-sections avec numéro (1.1.1, 1.1.2...) */
+  .subsection{
     margin:24px 0 12px;
+    font-size:16px;
+    font-weight:600;
+    color:#0f1724;
+  }
+  .subsection::before{
+    content:counter(section) "." counter(subsection) "." counter(subsubsection) " ";
+    color:#0f1724;
+    font-size:16px;
+    margin-right:6px;
     font-weight:700;
   }
 
@@ -132,7 +173,7 @@
     </div>
 
     <div class="card">
-      <h2>Mentions Légales</h2>
+      <h2>Éditeur du site</h2>
       <p>Ce site est édité à titre bénévole dans le cadre d'un projet personnel visant à faciliter la mise en relation entre particuliers et professionnels spécialisés dans l'accompagnement du TSA (autisme).</p>
       
       <p><strong>Contact du responsable de la publication :</strong> <a href="mailto:plateforme.lien.pro@gmail.com">plateforme.lien.pro@gmail.com</a></p>
@@ -141,76 +182,84 @@
       <p>Ce site est hébergé par <strong>GitHub Pages</strong> – <a href="https://pages.github.com" target="_blank">https://pages.github.com</a></p>
       <p><strong>Données hébergées sur :</strong> Google Sheets</p>
       
-      <h3>APIs utilisées</h3>
+      <h3>APIs et services externes utilisés</h3>
       <ul>
-        <li><strong>API Géo :</strong> data.gouv.fr (communes et départements)</li>
-        <li><strong>API SIRET :</strong> entreprise.data.gouv.fr</li>
-      </ul>
-      
-      <h3>Durée de conservation des données</h3>
-      <ul>
-        <li><strong>Professionnels :</strong> Tant qu'ils souhaitent être référencés</li>
-        <li><strong>Suppression automatique :</strong> Après 2 ans sans modification</li>
+        <li><strong>API Géo :</strong> data.gouv.fr (recherche de communes et départements)</li>
+        <li><strong>API SIRET :</strong> entreprise.data.gouv.fr (vérification des professionnels)</li>
+        <li><strong>OpenRouteService :</strong> Calcul des zones d'intervention des professionnels</li>
       </ul>
     </div>
     
     <div class="card">
-      <h2 id="confidentialite">Politique de Confidentialité & RGPD</h2>
-      <h3>Données collectées sur les particuliers</h3>
-      <p>Cette plateforme collecte très peu de données sur les particuliers :</p>
+      <h2>Protection de vos données personnelles (RGPD)</h2>
       
-      <p><strong>1. Quand vous faites une recherche :</strong></p>
-      <p>Nous enregistrons de manière anonyme (sans savoir qui vous êtes) :</p>
+      <h3>Quelles données collectons-nous sur vous ?</h3>
+      
+      <p class="subsection">🔍 Quand vous faites une recherche :</p>
+      <p>Nous enregistrons de manière <strong>totalement anonyme</strong> (sans savoir qui vous êtes) :</p>
       <ul>
         <li>Le département et la commune recherchés</li>
         <li>Le métier recherché (psychologue, ergothérapeute, etc.)</li>
         <li>La tranche d'âge</li>
         <li>La date de la recherche</li>
       </ul>
-      <p><strong>Pourquoi ?</strong> Pour comprendre les besoins non couverts (exemple : beaucoup de recherches dans un département mais peu de professionnels).</p>
-      <p><strong>Combien de temps ?</strong> 2 mois maximum, puis ces informations sont supprimées automatiquement.</p>
+      <p><strong>Pourquoi ?</strong> Pour comprendre les besoins non couverts (exemple : beaucoup de recherches dans un département mais peu de professionnels disponibles).</p>
       
-      <p style="margin-top:20px;"><strong>2. Si vous utilisez le bouton "Contacter" sur le profil d'un professionnel :</strong></p>
-      <p>Nous gardons temporairement :</p>
+      <p class="subsection">✉️ Si vous contactez un professionnel via le formulaire :</p>
+      <p>Nous conservons temporairement :</p>
       <ul>
         <li>Votre nom</li>
         <li>Votre adresse email</li>
         <li>Votre message</li>
-        <li>La date</li>
+        <li>La date d'envoi</li>
       </ul>
       <p><strong>Pourquoi ?</strong></p>
       <ul>
         <li>Pour transmettre votre message au professionnel</li>
         <li>Pour éviter le spam : vous ne pouvez contacter le même professionnel qu'une fois par 24h</li>
       </ul>
-      <p><strong>Combien de temps ?</strong> 2 mois maximum, puis suppression automatique.</p>
       
-      <p style="margin-top:20px;"><strong>3. Si vous consultez uniquement les résultats sans contacter de professionnel :</strong></p>
-        <p><strong>Aucune donnée personnelle collectée.</strong></p> <p>Votre navigateur garde les résultats en mémoire pendant 15 minutes pour accélérer l'affichage, mais ces données restent uniquement sur votre appareil.</p>
+      <p class="subsection">👀 Si vous consultez seulement les résultats :</p>
+      <p><strong>Aucune donnée personnelle n'est collectée.</strong></p>
+      <p>Votre navigateur garde les résultats en mémoire pendant 15 minutes pour accélérer l'affichage, mais ces données restent uniquement sur votre appareil et ne nous sont jamais transmises.</p>
 
-      <h3>Données des professionnels référencés</h3>
-      <p>Les professionnels qui s'inscrivent volontairement sur cette plateforme fournissent les informations suivantes :</p>
+      <h3>Combien de temps conservons-nous vos données ?</h3>
       <ul>
-        <li><strong>Identité</strong> : Nom, prénom, profession</li>
-        <li><strong>Contact</strong> : Email, téléphone</li>
-        <li><strong>Localisation</strong> : Département, commune, rayon d'intervention</li>
-        <li><strong>Pratique</strong> : Publics accompagnés, modes d'intervention, disponibilités</li>
+        <li><strong>Recherches anonymes :</strong> 2 mois maximum, puis suppression automatique</li>
+        <li><strong>Messages de contact :</strong> 2 mois maximum, puis suppression automatique</li>
+        <li><strong>Statistiques anonymes :</strong> Conservées de façon permanente (ex: "54 professionnels disponibles dans le Grand Est en novembre") – sans aucun nom ou email</li>
       </ul>
 
-      <p><Les professionnels s'inscrivent volontairement.</p>
-      <p><strong>Finalité :</strong> Mise en relation avec des particuliers recherchant un professionnel spécialisé en autisme.</p>
-      <p><strong>Durée de conservation :</strong> Les données sont conservées tant que le professionnel souhaite être référencé. Il peut demander leur suppression à tout moment.</p>
+      <p style="margin-top:24px;"><em>💡 Chaque 1er du mois à 9h, un nettoyage automatique supprime toutes les données de plus de 2 mois pour respecter votre vie privée.</em></p>
 
-      <h3>Cookies</h3>
+      <h3>Cookies et données de navigation</h3>
       <div class="info-box">
-        <p><strong>Cette plateforme utilise uniquement :</strong></p>
-        <ul>
-          <li><strong>Cache technique</strong> : Votre navigateur garde les résultats en mémoire pendant <strong>15 minutes</strong> pour éviter de recharger les données à chaque clic. Ces données restent uniquement sur votre appareil et ne nous sont jamais transmises.</li>
-          <li>Aucun cookie publicitaire</li>
-          <li>Aucun cookie de tracking</li>
-          <li>Aucune transmission à des tiers</li>
-        </ul>
+        <p><strong>Cette plateforme n'utilise aucun cookie publicitaire ou de tracking.</strong></p>
+        <p style="margin-top:12px;">Seul votre navigateur garde temporairement les résultats en mémoire (15 minutes) pour améliorer votre expérience. Ces données restent sur votre appareil et ne sont jamais transmises.</p>
       </div>
+
+      <h3>Vos droits</h3>
+      <p>Vous pouvez à tout moment :</p>
+      <ul>
+        <li>Demander une copie des données que nous avons sur vous</li>
+        <li>Demander la suppression de vos données de contact</li>
+        <li>Vous opposer au traitement de vos données</li>
+      </ul>
+      <p><strong>Contact :</strong> <a href="mailto:plateforme.lien.pro@gmail.com">plateforme.lien.pro@gmail.com</a></p>
+      <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez contacter la CNIL : <a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+    </div>
+
+    <div class="card">
+      <h2>Données des professionnels référencés</h2>
+      <p>Les professionnels qui s'inscrivent volontairement fournissent :</p>
+      <ul>
+        <li><strong>Identité :</strong> Nom, prénom, profession, SIRET</li>
+        <li><strong>Contact :</strong> Email, téléphone</li>
+        <li><strong>Localisation :</strong> Département, commune, zone d'intervention</li>
+        <li><strong>Pratique :</strong> Publics accompagnés, modes d'intervention, disponibilités</li>
+      </ul>
+
+      <p><strong>Conservation :</strong> Les données sont conservées tant que le professionnel souhaite être référencé. Suppression automatique après 2 ans sans modification de profil.</p>
     </div>
 
     <div class="card">
@@ -220,7 +269,7 @@
     </div>
 
     <div class="card">
-      <h2>Responsabilité</h2>
+      <h2>Responsabilité et limites</h2>
       
       <div class="info-box warning">
         <p><strong>⚠️ Points importants :</strong></p>
@@ -229,51 +278,26 @@
           <li>Elle ne garantit pas la qualité des prestations des professionnels référencés</li>
           <li>Les informations affichées sont fournies par les professionnels eux-mêmes</li>
           <li>La plateforme ne peut être tenue responsable d'informations erronées ou obsolètes</li>
-          <li>Les calculs de distance sont approximatifs et ne garantissent pas une intervention dans votre commune</li>
         </ul>
       </div>
 
-      <p>Il appartient aux particuliers de :</p>
+      <p><strong>Il vous appartient de :</strong></p>
       <ul>
         <li>Vérifier les qualifications et agréments des professionnels contactés</li>
-        <li>S'assurer de l'adéquation des prestations proposées à leurs besoins</li>
+        <li>Vous assurer de l'adéquation des prestations proposées à vos besoins</li>
         <li>Établir un contrat direct avec le professionnel choisi</li>
       </ul>
 
-      <h3>Approximations géographiques</h3>
-      <ul>
-        <li>Les zones d'intervention des professionnels sont calculées automatiquement selon leur temps de trajet ou rayon</li>
-        <li>Ces calculs sont <strong>approximatifs</strong> (précision ±3-5 km en métropole)</li>
-        <li><strong>Vérifiez toujours avec le professionnel</strong> qu'il intervient bien dans votre commune avant de vous déplacer</li>
-      </ul>
-    </div>
-
-        <div class="card">
-      <h2>Traitement automatique mensuel</h2>
-      <p>Le 1er de chaque mois à 9h du matin, la plateforme effectue automatiquement :</p>
-      
-      <p><strong>1. Suppression des profils professionnels inactifs depuis 2 ans</strong></p>
-      <p style="margin-left:20px;">Si un professionnel n'a pas modifié son profil depuis 2 ans, il est supprimé automatiquement (conformité RGPD).</p>
-      
-      <p><strong>2. Génération de statistiques mensuelles anonymes</strong></p>
-      <p style="margin-left:20px;">Exemple : "54 professionnels disponibles dans le Grand Est en novembre"</p>
-      
-      <p><strong>3. Suppression des données temporaires de plus de 2 mois :</strong></p>
-      <ul>
-        <li>Recherches effectuées par les particuliers (département, commune, métier recherché)</li>
-        <li>Messages envoyés via le formulaire de contact (nom, email, message)</li>
-        <li>Historique des modifications de profils professionnels</li>
-      </ul>
-      
-      <div class="info-box">
-        <p><strong>Ces suppressions automatiques garantissent votre vie privée et la conformité au RGPD.</strong></p>
-      </div>
+      <h3>Calculs géographiques approximatifs</h3>
+      <p>Les zones d'intervention affichées sont calculées automatiquement selon le temps de trajet ou le rayon défini par chaque professionnel.</p>
+      <p><strong>⚠️ Ces calculs sont approximatifs</strong> (précision ±3-5 km en métropole).</p>
+      <p><strong>Vérifiez toujours avec le professionnel</strong> qu'il intervient bien dans votre commune avant de prendre rendez-vous.</p>
     </div>
 
     <div class="card">
-      <h2 id="contact">Contact</h2>
-      <p>Pour toute question concernant cette plateforme :</p>
-      <p><strong>Email :</strong> [À COMPLÉTER : votre email]</p>
+      <h2>Contact</h2>
+      <p>Pour toute question concernant cette plateforme ou vos données personnelles :</p>
+      <p><strong>Email :</strong> <a href="mailto:plateforme.lien.pro@gmail.com">plateforme.lien.pro@gmail.com</a></p>
     </div>
 
     <div class="card">
