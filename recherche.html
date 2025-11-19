@@ -905,6 +905,8 @@
         console.log('✅ Départements chargés:', tousLesDepartements.length);
       } catch (error) {
         console.error('❌ Erreur chargement départements:', error);
+        const selectDept = document.getElementById('departement');
+        selectDept.innerHTML = '<option value="">❌ Erreur de chargement - Réessayez</option>';
       }
     }
 
