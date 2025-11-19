@@ -987,82 +987,101 @@
       afficherCommunes(communesFiltrees);
     }
 
-    // ============= RECHERCHE =============
-    async function rechercher() {
-      const metier = normaliser(document.getElementById('metier').value);
-      const tranche = normaliser(document.getElementById('tranche').value);
-      const departement = document.getElementById('departement').value;
-      const communePart = document.getElementById('commune').value;
-      
-      console.log('🔍 === RECHERCHE ===');
-      console.log('Métier:', metier);
-      console.log('Tranche:', tranche);
-      console.log('Département:', departement);
-      console.log('Commune:', communePart);
-      console.log('Professionnels chargés:', professionnels.length);
-      
-      const div = document.getElementById('resultats');
-      
-      if (!metier || !tranche || !departement || !communePart) {
-        div.innerHTML = `
-          <div class="alert warning">
-            <strong>⚠️ Champs manquants</strong><br>
-            Merci de remplir tous les champs avant de lancer la recherche.
-          </div>`;
-        div.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        return;
-      }
-      
-      div.innerHTML = '<div class="card"><div class="loading-state"><div class="loading-spinner"></div><h3 style="margin:0">🔍 Recherche en cours...</h3></div></div>';
-      
-      let coordsParticulier = null;
-      const communePartNom = communePart.split('(')[0].trim();
-      const communeDataPart = toutesLesCommunesDisponibles.find(c => normaliser(c.nom) === normaliser(communePartNom));      if (communeDataPart && communeDataPart.centre) {
-        coordsParticulier = {
-          lon: communeDataPart.centre.coordinates[0],
-          lat: communeDataPart.centre.coordinates[1]
-        };
-      }
 
-      const matches = [];
-      
-      for (const p of professionnels) {
-        const pMetier = normaliser(p[COLONNES.profession] || '');
-        const pTranches = p.publics || [];
-        const dispo = normaliser(p[COLONNES.disponibilite] || '');
-        
-        if (metier && pMetier !== metier) continue;
-        if (tranche && !pTranches.includes(tranche)) continue;
-        if (!dispo || dispo === 'non' || dispo === 'non disponible') continue;
-        
-        const geoResult = await verifierGeographie(p, departement, communePart, coordsParticulier);
-        if (!geoResult.ok) continue;
-        
-        matches.push({
-          ...p,
-          distance: geoResult.distance
-        });
-      }
-      
-      matches.sort((a, b) => {
-        const dateA = new Date(a[COLONNES.dateDisponibilite] || '9999-12-31');
-        const dateB = new Date(b[COLONNES.dateDisponibilite] || '9999-12-31');
-        
-        const diffDate = dateA - dateB;
-        if (diffDate !== 0) return diffDate;
-        
-        if (a.distance === null && b.distance === null) return 0;
-        if (a.distance === null) return 1;
-        if (b.distance === null) return -1;
-        return a.distance - b.distance;
-      });
-      
-      await logRecherche(departement, communePart, metier, tranche, matches.length);
-      
-      afficherResultats(matches, tranche);
+    // ============= RECHERCHE =============
+async function rechercher() {
+  const metier = normaliser(document.getElementById('metier').value);
+  const tranche = normaliser(document.getElementById('tranche').value);
+  const departement = document.getElementById('departement').value;
+  const communePart = document.getElementById('commune').value;
+  
+  console.log('🔍 === RECHERCHE ===');
+  console.log('Métier:', metier);
+  console.log('Tranche:', tranche);
+  console.log('Département:', departement);
+  console.log('Commune:', communePart);
+  console.log('Professionnels chargés:', professionnels.length);
+  
+  const div = document.getElementById('resultats');
+  
+  if (!metier || !tranche || !departement || !communePart) {
+    div.innerHTML = `
+      <div class="alert warning">
+        <strong>⚠️ Champs manquants</strong><br>
+        Merci de remplir tous les champs avant de lancer la recherche.
+      </div>`;
+    div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  
+  div.innerHTML = '<div class="card"><div class="loading-state"><div class="loading-spinner"></div><h3 style="margin:0">🔍 Recherche en cours...</h3></div></div>';
+  
+  try {
+    let coordsParticulier = null;
+    const communePartNom = communePart.split('(')[0].trim();
+    const communeDataPart = toutesLesCommunesDisponibles.find(c => normaliser(c.nom) === normaliser(communePartNom));
+    
+    if (communeDataPart && communeDataPart.centre) {
+      coordsParticulier = {
+        lon: communeDataPart.centre.coordinates[0],
+        lat: communeDataPart.centre.coordinates[1]
+      };
     }
 
-    // ✅ FONCTION CORRIGÉE AVEC TOUTES LES ACCOLADES
+    const matches = [];
+    
+    for (const p of professionnels) {
+      const pMetier = normaliser(p[COLONNES.profession] || '');
+      const pTranches = p.publics || [];
+      const dispo = normaliser(p[COLONNES.disponibilite] || '');
+      
+      if (metier && pMetier !== metier) continue;
+      if (tranche && !pTranches.includes(tranche)) continue;
+      if (!dispo || dispo === 'non' || dispo === 'non disponible') continue;
+      
+      const geoResult = await verifierGeographie(p, departement, communePart, coordsParticulier);
+      if (!geoResult.ok) continue;
+      
+      matches.push({
+        ...p,
+        distance: geoResult.distance
+      });
+    }
+    
+    matches.sort((a, b) => {
+      const dateA = new Date(a[COLONNES.dateDisponibilite] || '9999-12-31');
+      const dateB = new Date(b[COLONNES.dateDisponibilite] || '9999-12-31');
+      
+      const diffDate = dateA - dateB;
+      if (diffDate !== 0) return diffDate;
+      
+      if (a.distance === null && b.distance === null) return 0;
+      if (a.distance === null) return 1;
+      if (b.distance === null) return -1;
+      return a.distance - b.distance;
+    });
+    
+    await logRecherche(departement, communePart, metier, tranche, matches.length);
+    
+    afficherResultats(matches, tranche);
+    
+  } catch (error) {
+    console.error('❌ Erreur recherche:', error);
+    div.innerHTML = `
+      <div class="card">
+        <div class="alert warning">
+          <strong>❌ Erreur de recherche</strong><br>
+          Service temporairement indisponible. Réessayez dans quelques instants.<br>
+          <button onclick="rechercher()" style="margin-top:1rem;padding:0.5rem 1rem;background:var(--primary);color:white;border:none;border-radius:6px;cursor:pointer">
+            🔄 Réessayer
+          </button>
+        </div>
+      </div>`;
+    div.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+    // FONCTION CORRIGÉE AVEC TOUTES LES ACCOLADES
     async function verifierGeographie(professionnel, deptParticulier, communeParticulier, coordsParticulier) {
       const modeIntervention = professionnel[COLONNES.modeIntervention] || "";
       const deptProRaw = (professionnel[COLONNES.departement] || "").trim();
